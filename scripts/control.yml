@@ -1,0 +1,34 @@
+type: update
+name: Start/Sleep/Stop Environment
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-system/main
+logo: assets/decidim_logo.png
+
+settings:
+  fields:
+    - caption: Action
+      type: list
+      name: CONTROL
+      default: stop
+      required: true
+      values:
+        - value: stop
+          caption: Stop
+        - value: start
+          caption: Start
+        - value: sleep
+          caption: Sleep
+
+onInstall:
+  log: execute script
+  if (/stop/.test("${settings.CONTROL}")):
+    - log: Stop Environment ${env.envName} (remote control)
+    - api: jelastic.environment.control.StopEnv
+  if (/start/.test("${settings.CONTROL}")):
+    - log: Start Environment ${env.envName} (remote control)
+    - api: jelastic.environment.control.StartEnv
+  if (/sleep/.test("${settings.CONTROL}")):
+    - log: Put Environment to sleep ${env.envName} (remote control)
+    - api: jelastic.environment.control.SleepEnv
+  return:
+    type: success
+    message: ${settings.CONTROL} ${env.envName} (remote control)

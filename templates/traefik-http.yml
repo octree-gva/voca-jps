@@ -1,0 +1,13 @@
+http:
+  routers:
+    router-$SERVICE_NAME:
+      rule:  Host(`$URL`)
+      service: "$SERVICE_NAME"
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    $SERVICE_NAME:
+      loadBalancer:
+        servers:
+          - url: "http://$LAN_IP"

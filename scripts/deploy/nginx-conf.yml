@@ -1,0 +1,31 @@
+jpsType: update
+jpsVersion: '1.7.4'
+
+name: Nginx.conf/Decidim
+id: decidim-vanilla-nginx
+description:
+  short: Decidim Saas
+categories:
+  - apps/platforms
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-system/main
+logo: assets/decidim_logo.png
+
+settings:
+  fields:
+  - name: DECIDIM_URL
+    caption: DECIDIM_URL
+    type: string
+
+onInstall:
+  - setConfigs
+  - notifySuccess
+      
+actions:
+  setConfigs:
+    - cmd[bl]:
+      - curl -s "https://raw.githubusercontent.com/octree-gva/voca-system/main/templates/nginx.conf" > /etc/nginx/nginx-jelastic.conf
+  notifySuccess:
+    - cmd[vocacity]:
+        - cd /home/decidim/app
+        - bundle exec rails vocacity:webhook payload="{\"url\":\"${settings.DECIDIM_URL}\",\"envName\":\"${env.envName}\", \"envUrl\":\"${env.url}\",\"envAppId\":\"${env.appid}\",\"envDomain\":\"${env.domain}\", \"msg\":\"instance ready to use.\"}" name="decidim.ready" now="true"
+success: Load balancer for decidim is set up.

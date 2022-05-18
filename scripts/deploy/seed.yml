@@ -1,0 +1,75 @@
+jpsType: update
+jpsVersion: '1.7.4'
+
+name: Seed/Decidim
+id: decidim-vanilla-seed
+description:
+  short: Decidim Saas
+categories:
+  - apps/platforms
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-system/main
+logo: assets/decidim_logo.png
+settings:
+  fields:
+  - name: DECIDIM_HOST
+    caption: DECIDIM_HOST
+    type: string
+  - name: ADMIN_EMAIL
+    type: string
+    caption: ADMIN_EMAIL
+
+  - name: DECIDIM_DEFAULT_SYSTEM_EMAIL
+    caption: DECIDIM_DEFAULT_SYSTEM_EMAIL
+    type: string
+
+  - name: DECIDIM_DEFAULT_SYSTEM_PASSWORD
+    caption: DECIDIM_DEFAULT_SYSTEM_PASSWORD
+    type: string
+
+  - name: DECIDIM_NAME
+    caption: DECIDIM_NAME
+    type: string
+
+  - name: DECIDIM_SHORTNAME
+    caption: DECIDIM_SHORTNAME
+    type: string
+
+  - name: DECIDIM_DEFAULT_LOCALE
+    caption: DECIDIM_DEFAULT_LOCALE
+    type: string
+  - name: DECIDIM_AVAILABLE_LOCALES
+    caption: DECIDIM_AVAILABLE_LOCALES
+    type: string
+
+onInstall: 
+  - waitFor
+  - seedDecidim
+  - compileAssets
+  - softRestart
+
+actions:
+  waitFor:
+    - cmd[cp]:
+        - cd /home/decidim/app
+        - bin/wait-for-it.sh -h psql -p 5432
+        - bin/wait-for-it.sh -h redis -p 6379
+  seedDecidim:
+    - cmd[vocacity]:
+        - cd /home/decidim/app
+        - bundle exec rails db:migrate
+        - bundle exec rails vocacity:seed system_admin_email="${settings.DECIDIM_DEFAULT_SYSTEM_EMAIL}" system_admin_password="${settings.DECIDIM_DEFAULT_SYSTEM_PASSWORD}" admin_email="${settings.ADMIN_EMAIL}"
+          org_name="${settings.DECIDIM_NAME}" org_prefix="${settings.DECIDIM_SHORTNAME}" host="${settings.DECIDIM_HOST}" default_locale="${settings.DECIDIM_DEFAULT_LOCALE}" available_locales="${settings.DECIDIM_AVAILABLE_LOCALES}"
+  compileAssets:
+    - cmd[vocacity]:
+        - cd /home/decidim/app
+        - source $NVM_DIR/nvm.sh
+        - nvm use .  > /dev/null
+        - bundle exec rails assets:clobber > /dev/null
+        - SECRET_KEY_BASE=assets bundle exec rails assets:precompile > /dev/null
+        - bundle exec rails restart > /dev/null
+        - bundle exec rails vocacity:webhook payload="{\"precompiled\":true, \"msg\":\"assets precompiled\"}" name="decidim.assets_compiled" now="true"
+  softRestart:
+    - cmd[cp]:
+      - cd /home/decidim/app
+      - bundle exec rails restart > /dev/null
+success: Database and assets are ready.
