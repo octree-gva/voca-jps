@@ -7,7 +7,7 @@ description:
   short: Decidim Saas
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-system/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 ssl: true
 ha: false
@@ -22,11 +22,16 @@ globals:
   REDIS_USER: "admin_${fn.password(6)}"
   REDIS_PASSWORD: "${fn.password(64)}"
   DECIDIM_DEFAULT_SYSTEM_PASSWORD: "${fn.password(32)}"
+
 settings:
   fields:
   - name: PUBLIC_URL
     type: string
     caption: PUBLIC_URL
+  - name: TRAEFIK_ENVNAME
+    type: string
+    caption: TRAEFIK_ENVNAME
+    default: vocacity-traefik
   - name: PUBLIC_DOMAIN
     type: string
     caption: PUBLIC_DOMAIN
@@ -51,92 +56,74 @@ settings:
   - name: DECIDIM_CURRENCY_UNIT
     caption: DECIDIM_CURRENCY_UNIT
     type: string
-
   - name: JOB_IMAGE_REGISTRY
     type: string
     caption: JOB_IMAGE_REGISTRY
-
   - type: string
     name: JOB_IMAGE_PAGE
     caption: JOB_IMAGE_PAGE
-
   - type: string
     name: PROD_IMAGE_REGISTRY
     caption: PROD_IMAGE_REGISTRY
-
   - type: string
     name: PROD_IMAGE_PATH
     caption: PROD_IMAGE_PATH
-
   - name: IMAGE_USERNAME
     caption: IMAGE_USERNAME
     type: string
-
   - name: IMAGE_PASSWORD
     caption: IMAGE_PASSWORD
     type: string
-
   - type: string
     name: TIMEZONE
     caption: TIMEZONE
-
+  - type: string
+    name: ERROR_URL
+    caption: ERROR_URL
   - type: string
     name: WEBHOOK_URL
     caption: WEBHOOK_URL
-
   - type: string
     name: WEBHOOK_HMAC
     caption: WEBHOOK_HMAC
-
   - type: string
     name: INSTANCE_UUID
     caption: INSTANCE_UUID
   - name: SMTP_HOST
     caption: SMTP_HOST
     type: string
-
   - name: SMTP_DOMAIN
     caption: SMTP_DOMAIN
     type: string
-
   - name: SMTP_PORT
     caption: SMTP_PORT
     type: string
-
   - name: SMTP_USERNAME
     caption: SMTP_USERNAME
     type: string
-
   - name: SMTP_PASSWORD
     caption: SMTP_PASSWORD
     type: string
-
   - type: string
     name: SMTP_AUTHENTICATION
     caption: SMTP_AUTHENTICATION
-
   - type: string
     name: SMTP_HELO_DOMAIN
     caption: SMTP_HELO_DOMAIN
-
   - type: string
     name: SMTP_OPEN_TIMEOUT
     caption: SMTP_OPEN_TIMEOUT
-
   - type: string
     name: SMTP_READ_TIMEOUT
     caption: SMTP_READ_TIMEOUT
-
   - type: string
     name: BACKUP_CYPHER_KEY
     caption: BACKUP_CYPHER_KEY
-
   - type: string
     name: BACKUP_CYPHER_IV
     caption: BACKUP_CYPHER_IV
 
 nodes:
-# NGINX Load balancer
 - displayName: NGinx
   fixedCloudlets: 3
   flexibleCloudlets: 16
@@ -310,16 +297,31 @@ nodes:
   - /data
 onInstall: 
   - setupRedisPassword
-  - prepareDB
-  - prepareNginx
+  - maintenanceMode
+  - wakeUpTraefik
+  - seedDatabase
+  - decidimProxy
   - restartNodes:
       nodeType: bl
-  - prepareTraefik
+  - openTraefik
+  - wakeUpTraefik
 
 actions:
   setupRedisPassword:
     - cmd[nosqldb]: jem passwd set -p ${globals.REDIS_PASSWORD}
-  prepareDB:
+    - cmd[nosqldb]: echo "time=\"$(date +%FT%TZ)\" level=info msg=\"Redis password changed\"" >> /var/log/run.log
+  maintenanceMode:
+    - install:
+      jps: scripts/deploy/traefik-maintenance.yml?_r=${fn.random}
+      envName: ${settings.TRAEFIK_ENVNAME}
+      loggerName: "Maintenance Mode"
+      settings:
+        URL: ${settings.PUBLIC_DOMAIN}
+        SERVICE_NAME: decidim-${settings.INSTANCE_UUID}
+        ERROR_URL: ${settings.ERROR_URL}
+  wakeUpTraefik: 
+    - cmd[vocacity]: curl -k ${settings.PUBLIC_DOMAIN}
+  seedDatabase:
     - install:
       jps: scripts/deploy/seed.yml?_r=${fn.random}
       envName: ${env.envName}
@@ -334,23 +336,30 @@ actions:
         DECIDIM_SHORTNAME: ${settings.DECIDIM_SHORTNAME}
         DECIDIM_DEFAULT_LOCALE: ${settings.DECIDIM_DEFAULT_LOCALE}
         DECIDIM_AVAILABLE_LOCALES: ${settings.DECIDIM_AVAILABLE_LOCALES}
-  prepareNginx:
+  decidimProxy:
     - install:
       jps: scripts/deploy/nginx-conf.yml?_r=${fn.random}
       envName: ${env.envName}
       loggerName: "Decidim-Nginx"
       settings:
         DECIDIM_URL: ${settings.PUBLIC_URL}
-  prepareTraefik:
+  openTraefik:
     - install:
       jps: scripts/deploy/traefik-conf.yml?_r=${fn.random}
-      envName: "vocacity-traefik"
+      envName: ${settings.TRAEFIK_ENVNAME}
       loggerName: "Decidim-Traefik"
       settings:
         URL: ${settings.PUBLIC_DOMAIN}
         LAN_IP: ${nodes.bl.master.intIP}
         SERVICE_NAME: decidim-${settings.INSTANCE_UUID}
 success: |
-  Your Decidim is almost ready !
-  will be visible in [https://${env.envName}.voca.city](https://${env.envName}.voca.city/)
+    A new decidim is mounted ! Welcome ${settings.DECIDIM_NAME}
+
+    * link: [https://${env.envName}.voca.city](https://${env.envName}.voca.city/)
+    * guid: ${settings.INSTANCE_UUID}
+    * contact: ${settings.ADMIN_EMAIL}
+    * currency: "${settings.DECIDIM_CURRENCY_UNIT}"
+    * primary locale: ${settings.DECIDIM_DEFAULT_LOCALE}
+    * secondary locales: ${settings.DECIDIM_AVAILABLE_LOCALES}
+
 startPage: https://${env.envName}.voca.city/
