@@ -57,8 +57,10 @@ actions:
     - cmd[vocacity]:
         - cd /home/decidim/app
         - bundle exec rails db:migrate
+        - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"Migrations are done\"" >> /var/log/run.log
         - bundle exec rails vocacity:seed system_admin_email="${settings.DECIDIM_DEFAULT_SYSTEM_EMAIL}" system_admin_password="${settings.DECIDIM_DEFAULT_SYSTEM_PASSWORD}" admin_email="${settings.ADMIN_EMAIL}"
           org_name="${settings.DECIDIM_NAME}" org_prefix="${settings.DECIDIM_SHORTNAME}" host="${settings.DECIDIM_HOST}" default_locale="${settings.DECIDIM_DEFAULT_LOCALE}" available_locales="${settings.DECIDIM_AVAILABLE_LOCALES}"
+        - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"Decidim seeded\"" >> /var/log/run.log
   compileAssets:
     - cmd[vocacity]:
         - cd /home/decidim/app
