@@ -1,0 +1,16 @@
+actions:
+  decidimSeed:
+    - install:
+      jps: scripts/deploy/seed.yml?_r=${fn.random}
+      envName: ${env.envName}
+      loggerName: "DECIDIM_SEED"
+      settings:
+        ADMIN_EMAIL: ${settings.ADMIN_EMAIL}
+        DECIDIM_HOST: ${settings.PUBLIC_DOMAIN}
+        DECIDIM_URL: ${settings.PUBLIC_URL}
+        DECIDIM_DEFAULT_SYSTEM_EMAIL: ${settings.ADMIN_EMAIL}
+        DECIDIM_DEFAULT_SYSTEM_PASSWORD: ${globals.DECIDIM_DEFAULT_SYSTEM_PASSWORD}
+        DECIDIM_NAME: ${settings.DECIDIM_NAME}
+        DECIDIM_SHORTNAME: ${settings.DECIDIM_SHORTNAME}
+        DECIDIM_DEFAULT_LOCALE: ${settings.DECIDIM_DEFAULT_LOCALE}
+        DECIDIM_AVAILABLE_LOCALES: ${settings.DECIDIM_AVAILABLE_LOCALES}

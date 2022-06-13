@@ -1,0 +1,9 @@
+globals:
+  DB_PASSWORD: "${fn.password(32)}"
+  DB_USER: "decidim_${fn.password(6)}"
+  APP_SESSION_KEY: "${fn.password(16)}"
+  SECRET_KEY_BASE: "${fn.password(128)}"
+  MASTER_KEY: "${fn.password(32)}"
+  REDIS_USER: "admin_${fn.password(6)}"
+  REDIS_PASSWORD: "${fn.password(64)}"
+  DECIDIM_DEFAULT_SYSTEM_PASSWORD: "${fn.password(32)}"
