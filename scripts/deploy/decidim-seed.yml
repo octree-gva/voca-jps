@@ -7,7 +7,7 @@ description:
   short: Decidim Saas
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-system/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 settings:
   fields:
