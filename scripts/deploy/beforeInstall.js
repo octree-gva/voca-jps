@@ -7,7 +7,7 @@ var jps = 'https://raw.githubusercontent.com/octree-gva/voca-jps/main/scripts/de
         "ERROR_URL": '${settings.ERROR_URL}'
     });
 
-jelastic.marketplace.jps.install({jps, envName, settings, loggerName:"TRAEFIK_MAINTENANCE", skipNodeEmails: true});
+jelastic.marketplace.jps.install(jps, envName, settings);
 
 return {
     result: 0
