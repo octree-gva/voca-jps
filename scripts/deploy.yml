@@ -19,8 +19,7 @@ mixins:
   - /scripts/mixins/traefik.yml?_r=${fn.random}
 
 onBeforeInit: /scripts/deploy/settings.js?_r=${fn.random}
-onBeforeInstall:
-  - traefik502
+onBeforeInstall: /scripts/deploy/beforeInstall.js?_r=${fn.random}
 
 nodes:
 - displayName: NGinx
