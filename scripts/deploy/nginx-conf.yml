@@ -7,7 +7,7 @@ description:
   short: Decidim Saas
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-system/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 
 settings:
@@ -23,7 +23,7 @@ onInstall:
 actions:
   setConfigs:
     - cmd[bl]:
-      - curl -s "https://raw.githubusercontent.com/octree-gva/voca-system/main/templates/nginx.conf" > /etc/nginx/nginx-jelastic.conf
+      - curl -s "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/nginx.conf" > /etc/nginx/nginx-jelastic.conf
   notifySuccess:
     - cmd[vocacity]:
         - cd /home/decidim/app
