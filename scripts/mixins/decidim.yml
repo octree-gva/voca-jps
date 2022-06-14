@@ -1,7 +1,7 @@
 actions:
   decidimSeed:
     - install:
-      jps: scripts/deploy/seed.yml?_r=${fn.random}
+      jps: scripts/deploy/decidim-seed.yml?_r=${fn.random}
       envName: ${env.envName}
       loggerName: "DECIDIM_SEED"
       settings:

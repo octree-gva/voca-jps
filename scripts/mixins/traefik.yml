@@ -1,13 +1,4 @@
 actions:
-  traefik502:
-    - install:
-      jps: scripts/deploy/traefik-maintenance.yml?_r=${fn.random}
-      envName: ${settings.TRAEFIK_ENVNAME}
-      loggerName: "TRAEFIK_502"
-      settings:
-        URL: ${settings.PUBLIC_DOMAIN}
-        SERVICE_NAME: decidim-${settings.INSTANCE_UUID}
-        ERROR_URL: ${settings.ERROR_URL}
   traefikReady:
     - install:
       jps: scripts/deploy/traefik-conf.yml?_r=${fn.random}
