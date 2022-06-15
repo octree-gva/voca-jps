@@ -6,6 +6,7 @@ http:
       middlewares: "maintenance-$SERVICE_NAME"
       tls:
         certResolver: letsencrypt
+      priority: 10
 
   middlewares:
     maintenance-$SERVICE_NAME:
