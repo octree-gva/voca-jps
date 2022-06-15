@@ -3,8 +3,14 @@ http:
     router-$SERVICE_NAME:
       rule:  Host(`$URL`)
       service: "$SERVICE_NAME"
+      middlewares: "maintenance-$SERVICE_NAME"
       tls:
         certResolver: letsencrypt
+
+  middlewares:
+    maintenance-$SERVICE_NAME:
+      replacePath:
+        path: "/errors/502"
 
   services:
     $SERVICE_NAME:
