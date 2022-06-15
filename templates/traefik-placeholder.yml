@@ -1,6 +1,6 @@
 http:
-  router-$SERVICE_NAME:
-    catch-all:
+  routers:
+    router-$SERVICE_NAME:
       rule: Host(`$URL`)
       service: voca-frontend-app@file
       tls:
