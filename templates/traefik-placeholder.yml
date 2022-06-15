@@ -1,20 +1,21 @@
 http:
-  routers:
-    router-$SERVICE_NAME:
-      rule:  Host(`$URL`)
-      service: "$SERVICE_NAME"
-      middlewares: "maintenance-$SERVICE_NAME"
+  router-$SERVICE_NAME:
+    catch-all:
+      rule: Host(`$URL`)
+      service: voca-frontend-app@file
       tls:
         certResolver: letsencrypt
-      priority: 10
-
+      priority: 100
+      middlewares: 
+        - error-assets-$SERVICE_NAME
+        - error-$SERVICE_NAME
+      
   middlewares:
-    maintenance-$SERVICE_NAME:
+    error-$SERVICE_NAME:
       replacePath:
         path: "/errors/502"
-
-  services:
-    $SERVICE_NAME:
-      loadBalancer:
-        servers:
-          - url: "$ERROR_URL"
+    error-assets-$SERVICE_NAME:
+      redirectRegex:
+        regex: "^https://([a-z]*).voca.city/(_next|static|logo.png|api)(.*)"
+        replacement: "https://app.voca.city/${2}${3}"
+        
