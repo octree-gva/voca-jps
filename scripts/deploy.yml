@@ -69,9 +69,9 @@ nodes:
     SMTP_STARTTLS_AUTO: true
     RAILS_FORCE_SSL: "disabled"
     RAILS_CACHE_MODE: "redis"
-    RAILS_CACHE_REDIS_URL: "redis://default:${globals.REDIS_PASSWORD}@redis:6379/0"
+    CACHE_REDIS_URL: "redis://webadmin:${globals.REDIS_PASSWORD}@redis:6379/0"
     RAILS_JOB_MODE: "sidekiq"
-    JOB_REDIS_URL: "redis://default:${globals.REDIS_PASSWORD}@redis:6379/1"
+    JOB_REDIS_URL: "redis://webadmin:${globals.REDIS_PASSWORD}@redis:6379/1"
     TZ: "${settings.TIMEZONE}"
     DECIDIM_CURRENCY_UNIT: "${settings.DECIDIM_CURRENCY_UNIT}"
     DECIDIM_DEFAULT_LOCALE: ${settings.DECIDIM_DEFAULT_LOCALE}
@@ -117,9 +117,9 @@ nodes:
     SMTP_PORT: "${settings.SMTP_PORT}"
     RAILS_FORCE_SSL: "disabled"
     RAILS_CACHE_MODE: "redis"
-    RAILS_CACHE_REDIS_URL: "redis://default:${globals.REDIS_PASSWORD}@redis:6379/0"
+    CACHE_REDIS_URL: "redis://webadmin:${globals.REDIS_PASSWORD}@redis:6379/0"
     RAILS_JOB_MODE: "sidekiq"
-    JOB_REDIS_URL: "redis://default:${globals.REDIS_PASSWORD}@redis:6379/1"
+    JOB_REDIS_URL: "redis://webadmin:${globals.REDIS_PASSWORD}@redis:6379/1"
     SMTP_STARTTLS_AUTO: true
     TZ: "${settings.TIMEZONE}"
     DOCKER_EXPOSED_PORT: 3000
