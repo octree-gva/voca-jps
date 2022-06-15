@@ -5,6 +5,7 @@ http:
       service: "$SERVICE_NAME"
       tls:
         certResolver: letsencrypt
+      priority: 10
 
   services:
     $SERVICE_NAME:
