@@ -5,20 +5,19 @@ logo: assets/decidim_logo.png
 
 settings:
   fields:
-  - name: PUBLIC_URL
-    type: string
-    caption: PUBLIC_URL
-  - name: TRAEFIK_ENVNAME
-    type: string
-    caption: TRAEFIK_ENVNAME
-    default: vocacity-traefik
-  - name: INSTANCE_UUID
-    type: string
-    caption: INSTANCE_UUID
-  - name: PUBLIC_DOMAIN
-    type: string
-    caption: PUBLIC_DOMAIN
-
+    - name: PUBLIC_URL
+      type: string
+      caption: PUBLIC_URL
+    - name: TRAEFIK_ENVNAME
+      type: string
+      caption: TRAEFIK_ENVNAME
+      default: vocacity-traefik
+    - name: INSTANCE_UUID
+      type: string
+      caption: INSTANCE_UUID
+    - name: PUBLIC_DOMAIN
+      type: string
+      caption: PUBLIC_DOMAIN
 
 onInstall:
   - log: UPDATE_DOMAIN
@@ -28,14 +27,15 @@ onInstall:
   - log: /UPDATE_DOMAIN
   - return:
     type: success
-    message: ${settings.PUBLIC_DOMAIN} settled in ${env.envName} (remote control)
+    message:
+      ${settings.PUBLIC_DOMAIN} settled in ${env.envName} (remote control)
 
 actions:
   updateDomain:
     - install:
       jps: scripts/deploy/traefik-conf.yml?_r=${fn.random}
       envName: ${settings.TRAEFIK_ENVNAME}
-      loggerName: "TRAEFIK_UPDATE"
+      loggerName: 'TRAEFIK_UPDATE'
       settings:
         URL: ${settings.PUBLIC_DOMAIN}
         SERVICE_NAME: decidim-${settings.INSTANCE_UUID}
@@ -47,5 +47,6 @@ actions:
         - bin/wait-for-it.sh -h redis -p 6379
   updateHost:
     - cmd[vocacity]:
-      - cd /home/decidim/app
-      - bundle exec rails vocacity:update:host host="${settings.PUBLIC_DOMAIN}"
+        - cd /home/decidim/app
+        - bundle exec rails vocacity:update:host
+          host="${settings.PUBLIC_DOMAIN}"

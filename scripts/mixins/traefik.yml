@@ -3,10 +3,10 @@ actions:
     - install:
       jps: scripts/deploy/traefik-conf.yml?_r=${fn.random}
       envName: ${settings.TRAEFIK_ENVNAME}
-      loggerName: "TRAEFIK_READY"
+      loggerName: 'TRAEFIK_READY'
       settings:
         URL: ${settings.PUBLIC_DOMAIN}
         SERVICE_NAME: decidim-${settings.INSTANCE_UUID}
         LAN_IP: ${nodes.bl.master.intIP}
-  traefikWakeUp: 
+  traefikWakeUp:
     - cmd[vocacity]: curl -k ${settings.PUBLIC_DOMAIN}

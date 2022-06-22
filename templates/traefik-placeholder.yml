@@ -17,3 +17,4 @@ http:
     error-$SERVICE_NAME:
       replacePath:
         path: "/errors/502"
+        

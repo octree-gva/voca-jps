@@ -12,24 +12,29 @@ logo: assets/decidim_logo.png
 
 settings:
   fields:
-  - name: URL
-    caption: URL
-    type: string
-  - name: LAN_IP
-    caption: LAN_IP
-    type: string
-  - name: SERVICE_NAME
-    caption: SERVICE_NAME
-    type: string
+    - name: URL
+      caption: URL
+      type: string
+    - name: LAN_IP
+      caption: LAN_IP
+      type: string
+    - name: SERVICE_NAME
+      caption: SERVICE_NAME
+      type: string
 
 onInstall:
   - cmd[cp]:
       - echo "[JELASTIC] ADD ${settings.SERVICE_NAME}" >> /var/log/run.log
-      - export  URL="${settings.URL}" LAN_IP="${settings.LAN_IP}" SERVICE_NAME="${settings.SERVICE_NAME}"
-      - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim $URL is binded to $LAN_IP\"" >> /var/log/run.log
-      - curl -s "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-decidim.yml" > /tmp/$SERVICE_NAME.yml
+      - export  URL="${settings.URL}" LAN_IP="${settings.LAN_IP}"
+        SERVICE_NAME="${settings.SERVICE_NAME}"
+      - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim $URL is binded
+        to $LAN_IP\"" >> /var/log/run.log
+      - curl -s
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-decidim.yml"
+        > /tmp/$SERVICE_NAME.yml
       - cd /config/hosts
-      - (envsubst \$URL,\$SERVICE_NAME,\$LAN_IP < /tmp/$SERVICE_NAME.yml) > ./$SERVICE_NAME.yml
-      - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim $PWD/$SERVICE_NAME.yml up and running\"" >> /var/log/run.log
+      - (envsubst \$URL,\$SERVICE_NAME,\$LAN_IP < /tmp/$SERVICE_NAME.yml) >
+        ./$SERVICE_NAME.yml
+      - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim
+        $PWD/$SERVICE_NAME.yml up and running\"" >> /var/log/run.log
       - rm /tmp/$SERVICE_NAME.yml
-
