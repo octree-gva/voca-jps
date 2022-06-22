@@ -3,7 +3,7 @@ actions:
     - install:
       jps: scripts/deploy/decidim-seed.yml?_r=${fn.random}
       envName: ${env.envName}
-      loggerName: "DECIDIM_SEED"
+      loggerName: 'DECIDIM_SEED'
       settings:
         ADMIN_EMAIL: ${settings.ADMIN_EMAIL}
         DECIDIM_HOST: ${settings.PUBLIC_DOMAIN}

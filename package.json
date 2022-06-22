@@ -1,0 +1,14 @@
+{
+  "name": "voca-jps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "ssh://git@git.octree.ch:6118/decidim/vocacity/jps.git",
+  "author": "Hadrien Froger <hadrien@octree.ch>",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "format": "prettier --write scripts"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}
