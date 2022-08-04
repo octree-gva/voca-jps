@@ -21,8 +21,6 @@ settings:
 
 onInstall:
   - log: UPDATE_DOMAIN
-  - waitFor
-  - updateHost
   - updateDomain
   - log: /UPDATE_DOMAIN
   - return:
@@ -40,13 +38,3 @@ actions:
         URL: ${settings.PUBLIC_DOMAIN}
         SERVICE_NAME: decidim-${settings.INSTANCE_UUID}
         LAN_IP: ${nodes.bl.master.intIP}
-  waitFor:
-    - cmd[vocacity]:
-        - cd /home/decidim/app
-        - bin/wait-for-it.sh -h psql -p 5432
-        - bin/wait-for-it.sh -h redis -p 6379
-  updateHost:
-    - cmd[vocacity]:
-        - cd /home/decidim/app
-        - bundle exec rails vocacity:update:host
-          host="${settings.PUBLIC_DOMAIN}"
