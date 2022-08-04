@@ -6,4 +6,3 @@ globals:
   MASTER_KEY: '${fn.password(32)}'
   REDIS_USER: 'admin_${fn.password(6)}'
   REDIS_PASSWORD: '${fn.password(64)}'
-  DECIDIM_DEFAULT_SYSTEM_PASSWORD: '${fn.password(32)}'
