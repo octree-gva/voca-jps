@@ -68,9 +68,9 @@ nodes:
     links:
       - sqldb:psql
       - nosqldb:redis
-    image: '${settings.PROD_IMAGE_PATH}'
+    image: '${settings.IMAGE_PATH}'
     registry:
-      url: '${settings.PROD_IMAGE_REGISTRY}'
+      url: '${settings.IMAGE_REGISTRY}'
       user: '${settings.IMAGE_USERNAME}'
       password: '${settings.IMAGE_PASSWORD}'
     nodeGroup: cp
