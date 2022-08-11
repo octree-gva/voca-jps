@@ -1,0 +1,57 @@
+type: update
+name: Changing routing for a decidim instance
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+logo: assets/decidim_logo.png
+
+settings:
+  fields:
+    - name: TRAEFIK_ENVNAME
+      type: string
+      caption: TRAEFIK_ENVNAME
+      default: vocacity-traefik
+    - name: SERVICE_NAME
+      type: string
+      caption: SERVICE_NAME
+    - name: PUBLIC_DOMAIN
+      type: string
+      caption: PUBLIC_DOMAIN
+    - name: ERROR_URL
+      type: string
+      caption: ERROR_URL
+    - name: CODE
+      type: string
+      caption: "200 if route to PUBLIC domain, route else use CODE as ERROR_CODe"
+
+onInstall:
+  log: UPDATE_ROUTING
+  if (/200/.test("${settings.CODE}")):
+    - ok_routing
+    - log: /UPDATE_ROUTING_OK
+  if (!/200/.test("${settings.CODE}")):
+    - not_ok_routing
+    - log: /UPDATE_ROUTING_NOT_OK
+  return:
+    type: success
+    message:
+      ${settings.PUBLIC_DOMAIN} settled in ${env.envName} (remote control)
+
+actions:
+  ok_routing:
+    - install:
+      jps: scripts/deploy/traefik-conf.yml?_r=${fn.random}
+      envName: ${settings.TRAEFIK_ENVNAME}
+      loggerName: 'TRAEFIK_UPDATE'
+      settings:
+        URL: ${settings.PUBLIC_DOMAIN}
+        SERVICE_NAME: ${settings.SERVICE_NAME}
+        LAN_IP: ${nodes.bl.master.intIP}
+  not_ok_routing:
+    - install:
+      jps: scripts/deploy/traefik-error.yml?_r=${fn.random}
+      envName: ${settings.TRAEFIK_ENVNAME}
+      loggerName: 'TRAEFIK_UPDATE'
+      settings:
+        URL: '${settings.PUBLIC_DOMAIN}'
+        SERVICE_NAME: 'decidim-${settings.INSTANCE_UUID}'
+        ERROR_URL: '${settings.ERROR_URL}'
+        ERROR_CODE: '502'

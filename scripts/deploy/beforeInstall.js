@@ -7,19 +7,19 @@ var log = function (message) {
 };
 
 var jps =
-    'https://raw.githubusercontent.com/octree-gva/voca-jps/main/scripts/deploy/traefik-maintenance.yml?_r=${fn.random}',
+    'https://raw.githubusercontent.com/octree-gva/voca-jps/main/scripts/deploy/traefik-error.yml?_r=${fn.random}',
   envName = '${settings.TRAEFIK_ENVNAME}',
   settings = toJSON({
     URL: '${settings.PUBLIC_DOMAIN}',
     SERVICE_NAME: 'decidim-${settings.INSTANCE_UUID}',
     ERROR_URL: '${settings.ERROR_URL}',
+    ERROR_CODE: '502'
   });
 
 log('jps=' + jps);
 log('envName=' + envName);
 log('settings=' + settings);
 var response = jelastic.marketplace.jps.install(jps, envName, settings);
-log('settings=' + settings);
 log('RESULTS    ' + toJSON(response));
 
 return {
