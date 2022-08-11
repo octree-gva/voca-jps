@@ -13,7 +13,7 @@ var jps =
     URL: '${settings.PUBLIC_DOMAIN}',
     SERVICE_NAME: 'decidim-${settings.INSTANCE_UUID}',
     ERROR_URL: '${settings.ERROR_URL}',
-    ERROR_CODE: '502'
+    ERROR_CODE: '502',
   });
 
 log('jps=' + jps);
