@@ -55,4 +55,4 @@ actions:
         URL: '${settings.PUBLIC_DOMAIN}'
         SERVICE_NAME: '${settings.SERVICE_NAME}'
         ERROR_URL: '${settings.ERROR_URL}'
-        ERROR_CODE: '${settings.CODE}''
+        ERROR_CODE: '${settings.CODE}'
