@@ -16,5 +16,5 @@ http:
         replacement: "https://app.voca.city/${2}${3}"
     error-$SERVICE_NAME:
       replacePath:
-        path: "/errors/502"
+        path: "/errors/$ERROR_CODE"
         

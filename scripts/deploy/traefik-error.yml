@@ -18,6 +18,9 @@ settings:
     - name: ERROR_URL
       caption: ERROR_URL
       type: string
+    - name: ERROR_CODE
+      caption: ERROR_CODE
+      type: string
     - name: SERVICE_NAME
       caption: SERVICE_NAME
       type: string
@@ -33,7 +36,7 @@ onInstall:
         "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-placeholder.yml"
         > /tmp/$SERVICE_NAME.yml
       - cd /config/hosts
-      - (envsubst \$URL,\$SERVICE_NAME,\$ERROR_URL < /tmp/$SERVICE_NAME.yml) >
+      - (envsubst \$URL,\$SERVICE_NAME,\$ERROR_URL,\$ERROR_CODE < /tmp/$SERVICE_NAME.yml) >
         ./$SERVICE_NAME.yml
       - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim
         $PWD/$SERVICE_NAME.yml up and running\"" >> /var/log/run.log
