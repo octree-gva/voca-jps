@@ -1,6 +1,6 @@
 /*
-* Takes a yml file with all the settings, and inject it in the current manifest.
-*/
+ * Takes a yml file with all the settings, and inject it in the current manifest.
+ */
 var url =
   'https://raw.githubusercontent.com/octree-gva/voca-jps/main/scripts/mixins/settings.yml';
 var settings = toNative(

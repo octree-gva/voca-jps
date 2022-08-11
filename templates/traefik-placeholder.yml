@@ -6,15 +6,14 @@ http:
       tls:
         certResolver: letsencrypt
       priority: 100
-      middlewares: 
+      middlewares:
         - error-assets-$SERVICE_NAME
         - error-$SERVICE_NAME
   middlewares:
     error-assets-$SERVICE_NAME:
       redirectRegex:
-        regex: "^https://([a-z-]*).voca.city/(_next|static|logo.png|api)(.*)"
-        replacement: "https://app.voca.city/${2}${3}"
+        regex: '^https://([a-z-]*).voca.city/(_next|static|logo.png|api)(.*)'
+        replacement: 'https://app.voca.city/${2}${3}'
     error-$SERVICE_NAME:
       replacePath:
-        path: "/errors/$ERROR_CODE"
-        
+        path: '/errors/$ERROR_CODE'

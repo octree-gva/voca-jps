@@ -20,7 +20,8 @@ settings:
       caption: ERROR_URL
     - name: CODE
       type: string
-      caption: "200 if route to PUBLIC domain, route else use CODE as ERROR_CODe"
+      caption:
+        '200 if route to PUBLIC domain, route else use CODE as ERROR_CODe'
 
 onInstall:
   log: UPDATE_ROUTING
@@ -52,6 +53,6 @@ actions:
       loggerName: 'TRAEFIK_UPDATE'
       settings:
         URL: '${settings.PUBLIC_DOMAIN}'
-        SERVICE_NAME: 'decidim-${settings.INSTANCE_UUID}'
+        SERVICE_NAME: '${settings.SERVICE_NAME}'
         ERROR_URL: '${settings.ERROR_URL}'
-        ERROR_CODE: '502'
+        ERROR_CODE: '${settings.CODE}''
