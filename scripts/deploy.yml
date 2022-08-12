@@ -61,9 +61,9 @@ nodes:
       MASTER_KEY: '${globals.MASTER_KEY}'
       RAILS_FORCE_SSL: 'disabled'
       RAILS_CACHE_MODE: 'redis'
-      CACHE_REDIS_URL: 'redis://webadmin:${globals.REDIS_PASSWORD}@redis:6379/0'
+      CACHE_REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/0'
       RAILS_JOB_MODE: 'sidekiq'
-      JOB_REDIS_URL: 'redis://webadmin:${globals.REDIS_PASSWORD}@redis:6379/1'
+      JOB_REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/1'
       TZ: '${settings.TIMEZONE}'
       DECIDIM_RUN_PUMA: '1'
       DECIDIM_RUN_SIDEKIQ: '0'
@@ -102,9 +102,9 @@ nodes:
       DATABASE_USERNAME: '${globals.DB_USER}'
       SECRET_KEY_BASE: '${globals.SECRET_KEY_BASE}'
       RAILS_CACHE_MODE: 'redis'
-      CACHE_REDIS_URL: 'redis://webadmin:${globals.REDIS_PASSWORD}@redis:6379/0'
+      CACHE_REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/0'
       RAILS_JOB_MODE: 'sidekiq'
-      JOB_REDIS_URL: 'redis://webadmin:${globals.REDIS_PASSWORD}@redis:6379/1'
+      JOB_REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/1'
       TZ: '${settings.TIMEZONE}'
       DOCKER_EXPOSED_PORT: 3000
       PORT: 3000
