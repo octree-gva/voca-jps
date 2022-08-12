@@ -28,7 +28,8 @@ settings:
 onInstall:
   - cmd[cp]:
       - echo "[JELASTIC] ADD ${settings.SERVICE_NAME}" >> /var/log/run.log
-      - export  URL="${settings.URL}" ERROR_URL="${settings.ERROR_URL}" ERROR_CODE="${settings.ERROR_CODE}"
+      - export  URL="${settings.URL}" ERROR_URL="${settings.ERROR_URL}"
+        ERROR_CODE="${settings.ERROR_CODE}"
         SERVICE_NAME="${settings.SERVICE_NAME}"
       - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim $URL is in
         maintenance\"" >> /var/log/run.log
