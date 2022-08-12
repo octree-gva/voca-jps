@@ -11,39 +11,15 @@ fields:
   - name: PUBLIC_DOMAIN
     type: string
     caption: PUBLIC_DOMAIN
-  - name: ADMIN_EMAIL
-    type: string
-    caption: ADMIN_EMAIL
-  - name: DECIDIM_DEFAULT_SYSTEM_EMAIL
-    caption: DECIDIM_DEFAULT_SYSTEM_EMAIL
-    type: string
-  - name: DECIDIM_NAME
-    caption: DECIDIM_NAME
-    type: string
-  - name: DECIDIM_SHORTNAME
-    caption: DECIDIM_SHORTNAME
-    type: string
-  - name: DECIDIM_DEFAULT_LOCALE
-    caption: DECIDIM_DEFAULT_LOCALE
-    type: string
-  - name: DECIDIM_AVAILABLE_LOCALES
-    caption: DECIDIM_AVAILABLE_LOCALES
-    type: string
   - name: DECIDIM_CURRENCY_UNIT
     caption: DECIDIM_CURRENCY_UNIT
     type: string
-  - name: JOB_IMAGE_REGISTRY
+  - name: IMAGE_REGISTRY
     type: string
-    caption: JOB_IMAGE_REGISTRY
+    caption: IMAGE_REGISTRY
   - type: string
-    name: JOB_IMAGE_PATH
-    caption: JOB_IMAGE_PATH
-  - type: string
-    name: PROD_IMAGE_REGISTRY
-    caption: PROD_IMAGE_REGISTRY
-  - type: string
-    name: PROD_IMAGE_PATH
-    caption: PROD_IMAGE_PATH
+    name: IMAGE_PATH
+    caption: IMAGE_PATH
   - name: IMAGE_USERNAME
     caption: IMAGE_USERNAME
     type: string
