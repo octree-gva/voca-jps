@@ -190,7 +190,10 @@ actions:
       loggerName: 'Decidim-Nginx'
       settings:
         DECIDIM_URL: ${settings.PUBLIC_URL}
+    - restartNode [cp]
+    - restartNode [vocacity]
     - restartNode [bl]
+
 
 success: |
   A new decidim is mounted ! Welcome ${settings.DECIDIM_NAME}
