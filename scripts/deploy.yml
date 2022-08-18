@@ -190,8 +190,6 @@ actions:
       loggerName: 'Decidim-Nginx'
       settings:
         DECIDIM_URL: ${settings.PUBLIC_URL}
-    - restartNode [cp]
-    - restartNode [vocacity]
     - restartNode [bl]
 
 
