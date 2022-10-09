@@ -1,0 +1,139 @@
+jpsType: install
+jpsVersion: '1.7.4'
+
+name: Voca/Autopoiesis/System
+id: voca-autopoiesis-system
+description:
+  short: Your saas for civic techs
+categories:
+  - apps/platforms
+
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+logo: assets/decidim_logo.png
+
+globals:
+  DB_PASSWORD: '${fn.password(32)}'
+  DB_USER: 'decidim_${fn.password(6)}'
+  STRAPI_SESSION_KEY: '${fn.password(32)}'
+  ADMIN_JWT_SECRET: '${fn.password(32)}'
+  API_TOKEN_SALT: '${fn.password(32)}'
+  NEXTAUTH_SECRET: '${fn.password(32)}'
+  REDIS_PASSWORD: '${fn.password(64)}'
+
+settings:
+  fields:
+    - name: TRAEFIK_ENVNAME
+      caption: traefik env name
+      type: string
+    - name: SERVICE_DISPLAY_NAME
+      type: string
+      caption: SaaS displayed name
+    - name: SERVICE_HOST_NAME
+      type: string
+      caption: SaaS domain name
+    - name: JELASTIC_TOKEN
+      type: string
+      caption: Jelastic token with environment and marketplace perms.
+    - name: SYSADMIN_EMAIL
+      type: string
+      caption: Email used for development support
+
+nodes:
+  - displayName: Ⓥ postgres
+    fixedCloudlets: 3
+    flexibleCloudlets: 12
+    diskLimit: 100G
+    nodeGroup: sqldb
+    image: postgres:12
+    isSLBAccessEnabled: false
+    env:
+      POSTGRES_PASSWORD: '${globals.DB_PASSWORD}'
+      POSTGRES_DB: decidim
+      POSTGRES_USER: '${globals.DB_USER}'
+      ADMINPANEL_ENABLED: false
+      LC_ALL: 'en_US.UTF-8'
+    volumes:
+      - '/var/lib/postgresql/data'
+
+  - displayName: Ⓥ redis
+    image: jelastic/redis:6.2.6
+    fixedCloudlets: 2
+    flexibleCloudlets: 16
+    nodeGroup: nosqldb
+    isSLBAccessEnabled: false
+    env:
+      ADMINPANEL_ENABLED: false
+
+ - displayName: Ⓥ strapi 
+    fixedCloudlets: 4
+    flexibleCloudlets: 12
+    diskLimit: 100G
+    env:
+      NODE_ENV: production
+      PUBLIC_URL: 'api.${settings.SERVICE_HOST_NAME}'
+      HOST: "0.0.0.0"
+      ADMIN_JWT_SECRET: '${settings.ADMIN_JWT_SECRET}'
+      API_TOKEN_SALT: '${settings.API_TOKEN_SALT}'
+      STRAPI_SESSION_KEY: '${settings.STRAPI_SESSION_KEY}'
+      REDIS_PORT: "6379"
+      REDIS_HOST: "redis"
+      REDIS_USERNAME: "default"
+      REDIS_PASSWORD:  '${settings.REDIS_PASSWORD}'
+      REDIS_DB: "0"
+      SMTP_DEFAULT_FROM:  '${settings.SYSADMIN_EMAIL}'
+      SMTP_DEFAULT_REPLYTO:  '${settings.SYSADMIN_EMAIL}'
+      DATABASE_HOST: pg 
+      DATABASE_PORT: 5432 
+      DATABASE_NAME: strapi 
+      DATABASE_USERNAME: '${settings.DB_USER}' 
+      DATABASE_PASSWORD: '${settings.DB_PASSWORD}'
+    links:
+      - sqldb:pg
+      - nosqldb:redis
+    isSLBAccessEnabled: false
+    image: 
+    registry:
+      url: 'git.octree.ch:4567'
+    nodeGroup: strapi
+    volumes:
+      - "/srv/app/backend/.env"
+      - "/srv/app/backend/node_modules"
+      - "/srv/app/backend/build"
+
+ - displayName: Ⓥ next 
+    fixedCloudlets: 4
+    flexibleCloudlets: 30
+    diskLimit: 5G
+    env:
+      PUBLIC_URL: 'app.${settings.SERVICE_HOST_NAME}'
+      NODE_ENV: production
+      NEXTAUTH_SECRET: '${settings.NEXTAUTH_SECRET}'
+      NEXTAUTH_URL: 'api.${settings.SERVICE_HOST_NAME}'
+    links:
+      - strapi:api
+    isSLBAccessEnabled: false
+    image: decidim/vocacity/system/frontend:latest
+    registry:
+      url: 'git.octree.ch:4567'
+    nodeGroup: next
+    volumes:
+      - "/srv/app/frontend/.env"
+      - "/srv/app/frontend/node_modules"
+      - "/srv/app/frontend/.next"
+
+onInstall:
+  - redisSetPassword
+
+actions:
+  redisSetPassword:
+    - cmd[nosqldb]: jem passwd set -p ${globals.REDIS_PASSWORD}
+  callbackAutopoiesis:
+    - install:
+      jps: scripts/deploy/autopoiesis-callback.yml?_r=${fn.random}
+      envName: ${settings.TRAEFIK_ENVNAME}
+      loggerName: 'TRAEFFIK_CALLBACK'
+      settings:
+        APP_IPV4: nodes.next.master.intIP
+        API_IPV4: nodes.strapi.master.intIP
+        SERVICE_HOST_NAME: '${settings.SERVICE_HOST_NAME}'
+

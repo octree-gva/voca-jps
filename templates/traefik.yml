@@ -1,0 +1,26 @@
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entrypoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+
+api:
+  dashboard: true
+  insecure: false
+
+providers:
+  file:
+    directory: "/config/hosts"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "$ADMIN_EMAIL"
+      storage: "acme.json"
+      httpChallenge:
+        entrypoint: web

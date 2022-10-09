@@ -1,0 +1,38 @@
+jpsType: update
+jpsVersion: '1.7.4'
+
+name: Voca/Autopoiesis/Callback
+id: voca-autopoiesis-callback
+description:
+  short: Your saas for civic techs
+categories:
+  - apps/platforms
+
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+logo: assets/decidim_logo.png
+
+
+settings:
+  fields:
+    - name: APP_IPV4
+      caption: IPv4 for app
+      type: string
+    - name: API_IPV4
+      type: string
+      caption: IPv4 for api
+    - name: SERVICE_HOST_NAME
+      type: string
+      caption: SaaS domain name
+
+onInstall:
+  - cmd[cp]:
+      - echo "[JELASTIC] API to ${settings.API_IPV4}" >> /var/log/run.log
+      - echo "[JELASTIC] APP to ${settings.APP_IPV4}" >> /var/log/run.log
+      - export  API_IPV4="${settings.API_IPV4}" APP_IPV4="${settings.APP_IPV4}" SERVICE_HOST_NAME="${settings.SERVICE_HOST_NAME}"
+      - curl -s
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-system.yml"
+        > /tmp/traefik-system.yml
+      - cd /config/hosts
+      - (envsubst \$API_IPV4,\$APP_IPV4,\$SERVICE_HOST_NAME < /tmp/traefik-system.yml) >
+        ./traefik-system.yml
+      - rm /tmp/$traefik-system.yml

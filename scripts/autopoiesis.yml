@@ -1,0 +1,79 @@
+jpsType: install
+jpsVersion: '1.7.4'
+
+name: Voca/Autopoiesis
+id: voca-autopoiesis
+description:
+  short: Your saas for civic techs
+categories:
+  - apps/platforms
+
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+logo: assets/decidim_logo.png
+ssl: true
+ha: false
+envGroups: 'vocacity'
+fields:
+  - name: SERVICE_DISPLAY_NAME
+    type: string
+    caption: SaaS displayed name
+  - name: SERVICE_HOST_NAME
+    type: string
+    caption: SaaS domain name
+  - name: JELASTIC_TOKEN
+    type: string
+    caption: Jelastic token with environment and marketplace perms.
+  - name: SYSADMIN_EMAIL
+    type: string
+    caption: Email used for development support
+
+nodes:
+  - displayName: Ⓥ Traefik
+    fixedCloudlets: 3
+    flexibleCloudlets: 16
+    diskLimit: 50G
+    nodeGroup: bl
+    image: traefik:v2.7
+    cmd: traefik --configFile=/config/traefik.yml
+    extip: 1
+    isSLBAccessEnabled: false
+    volumes:
+      - /config
+
+onInstall:
+  - applyConfig
+  - installSystem
+
+actions:
+  applyConfig:
+    - cmd[bl]: 
+      - mkdir -p /config/hosts && touch /config/traefik.yml
+      - export SERVICE_HOST_NAME="${settings.SERVICE_HOST_NAME}" SYSADMIN_EMAIL="${settings.SYSADMIN_EMAIL}"
+      - curl -s
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik.yml"
+        > /tmp/traefik.yml
+      - cd /config
+      - (envsubst \$SERVICE_HOST_NAME,\$SYSADMIN_EMAIL < /tmp/traefik.yml) >
+        ./traefik.yml
+      - rm /tmp/traefik.yml
+  installSystem:
+    - install:
+      jps: scripts/deploy/autopoiesis.yml?_r=${fn.random}
+      envName: ${env.envName}-system
+      loggerName: 'SYSTEM_INSTALL'
+      settings:
+        TRAEFIK_ENVNAME: ${env.envName}
+        SERVICE_DISPLAY_NAME: ${settings.SERVICE_DISPLAY_NAME}
+        SERVICE_HOST_NAME: ${settings.SERVICE_HOST_NAME}
+        JELASTIC_TOKEN: ${settings.JELASTIC_TOKEN}
+        SYSADMIN_EMAIL: ${settings.SYSADMIN_EMAIL}
+success: |
+  Ready to run Decidim as a Service?
+
+  * Setup your DNS: `A    *.${settings.SERVICE_HOST_NAME}   ${nodes.bl.master.intIP}`
+  * Setup your Strapi Mailer env (see envs variables SMTP_*)
+  * Go to https://api.${settings.SERVICE_HOST_NAME} and create your strapi CMS
+  * Ready to go, you can distribute Decidim!
+
+  
+startPage: https://app.${settings.SERVICE_HOST_NAME}
