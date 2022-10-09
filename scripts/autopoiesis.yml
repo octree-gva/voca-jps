@@ -13,19 +13,21 @@ logo: assets/decidim_logo.png
 ssl: true
 ha: false
 envGroups: 'vocacity'
-fields:
-  - name: SERVICE_DISPLAY_NAME
-    type: string
-    caption: SaaS displayed name
-  - name: SERVICE_HOST_NAME
-    type: string
-    caption: SaaS domain name
-  - name: JELASTIC_TOKEN
-    type: string
-    caption: Jelastic token with environment and marketplace perms.
-  - name: SYSADMIN_EMAIL
-    type: string
-    caption: Email used for development support
+settings:
+
+  fields:
+    - name: SERVICE_DISPLAY_NAME
+      type: string
+      caption: SaaS displayed name
+    - name: SERVICE_HOST_NAME
+      type: string
+      caption: SaaS domain name
+    - name: JELASTIC_TOKEN
+      type: string
+      caption: Jelastic token with environment and marketplace perms.
+    - name: SYSADMIN_EMAIL
+      type: string
+      caption: Email used for development support
 
 nodes:
   - displayName: Ⓥ Traefik
@@ -75,5 +77,5 @@ success: |
   * Go to https://api.${settings.SERVICE_HOST_NAME} and create your strapi CMS
   * Ready to go, you can distribute Decidim!
 
-  
+
 startPage: https://app.${settings.SERVICE_HOST_NAME}
