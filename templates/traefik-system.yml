@@ -1,0 +1,40 @@
+http:
+  routers:
+    router-system-api:
+      rule:  Host(`api.$SERVICE_HOST_NAME`)
+      service: "system-api"
+      tls:
+        certResolver: letsencrypt
+      priority: 100
+    router-system-app:
+      rule:  Host(`app.$SERVICE_HOST_NAME`)
+      service: "system-app"
+      tls:
+        certResolver: letsencrypt
+      priority: 100
+    catch-all:
+      rule: HostRegexp(`{subdomain:[a-z-]+}.$SERVICE_HOST_NAME`)
+      service: system-app
+      tls: 
+        certresolver: letsencrypt
+      middlewares: 
+        - error-handler-assets
+        - error-handler
+      priority: 1
+  middlewares:
+    error-handler:
+      replacePath:
+        path: "/errors/404"
+    error-handler-assets:
+      redirectRegex:
+        regex: "^https://([a-z-]*).$SERVICE_HOST_NAME/(_next|static|logo.png|api)(.*)"
+        replacement: "https://app.$SERVICE_HOST_NAME/${2}${3}"
+  services:
+    system-api:
+      loadBalancer:
+        servers:
+          - url: "http://$API_IPV4"
+    system-app:
+      loadBalancer:
+        servers:
+          - url: "http://$APP_IPV4"
