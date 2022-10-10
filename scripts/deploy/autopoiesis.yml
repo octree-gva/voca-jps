@@ -54,8 +54,7 @@ nodes:
       LC_ALL: 'en_US.UTF-8'
     volumes:
       - '/var/lib/postgresql/data'
-
-  - displayName: Ⓥ redis
+  - displayName: "Ⓥ redis"
     image: jelastic/redis:6.2.6
     fixedCloudlets: 2
     flexibleCloudlets: 16
@@ -63,8 +62,7 @@ nodes:
     isSLBAccessEnabled: false
     env:
       ADMINPANEL_ENABLED: false
-
- - displayName: Ⓥ strapi 
+ - displayName: "Ⓥ strapi "
     fixedCloudlets: 4
     flexibleCloudlets: 12
     diskLimit: 100G
@@ -91,7 +89,7 @@ nodes:
       - sqldb:pg
       - nosqldb:redis
     isSLBAccessEnabled: false
-    image: 
+    image: "decidim/vocacity/system/backend:latest"
     registry:
       url: 'git.octree.ch:4567'
     nodeGroup: strapi
