@@ -8,7 +8,6 @@ logo: assets/decidim_logo.png
 ssl: true
 ha: false
 envGroups: 'vocacity'
-<<<<<<< HEAD
 
 description:
   short: Your saas for civic techs
@@ -16,10 +15,6 @@ categories:
   - apps/platforms
 
 settings:
-=======
-settings:
-
->>>>>>> f14efc47a3579605d7982058e36f8cd62ba62530
   fields:
     - name: SERVICE_DISPLAY_NAME
       type: string
