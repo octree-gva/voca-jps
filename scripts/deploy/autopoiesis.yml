@@ -62,7 +62,7 @@ nodes:
     isSLBAccessEnabled: false
     env:
       ADMINPANEL_ENABLED: false
- - displayName: "Ⓥ strapi "
+  - displayName: "Ⓥ strapi"
     fixedCloudlets: 4
     flexibleCloudlets: 12
     diskLimit: 100G
@@ -97,8 +97,7 @@ nodes:
       - "/srv/app/backend/.env"
       - "/srv/app/backend/node_modules"
       - "/srv/app/backend/build"
-
- - displayName: Ⓥ next 
+  - displayName: Ⓥ next 
     fixedCloudlets: 4
     flexibleCloudlets: 30
     diskLimit: 5G

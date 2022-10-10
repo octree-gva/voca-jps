@@ -30,7 +30,7 @@ settings:
       caption: Email used for development support
 
 nodes:
-  - displayName: Ⓥ Traefik
+  - displayName: "Ⓥ Traefik"
     fixedCloudlets: 3
     flexibleCloudlets: 16
     diskLimit: 50G
