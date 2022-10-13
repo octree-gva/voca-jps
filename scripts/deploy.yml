@@ -87,6 +87,11 @@ nodes:
         readOnly: false
         sourceNodeGroup: storage
         sourcePath: '/data'
+      /home/decidim/app/db/migrate:
+        protocol: NFS4
+        readOnly: false
+        sourceNodeGroup: storage
+        sourcePath: '/migrations'
 
   # Decidim runner (sidekiq+tasks)
   - displayName: RUNNER
@@ -132,6 +137,11 @@ nodes:
         readOnly: false
         sourceNodeGroup: storage
         sourcePath: '/data'
+      /home/decidim/app/db/migrate:
+        protocol: NFS4
+        readOnly: false
+        sourceNodeGroup: storage
+        sourcePath: '/migrations'
 
   # DATA : postgres database
   - displayName: PG
@@ -172,10 +182,12 @@ nodes:
       HOME_DIR: '/data'
     volumes:
       - /data
+      - /migrations
 
 onInstall:
   - redisSetPassword
   - nginxSetup
+  - createMigrations
 
 actions:
   redisSetPassword:
@@ -191,6 +203,8 @@ actions:
       settings:
         DECIDIM_URL: ${settings.PUBLIC_URL}
     - restartNode [bl]
+  createMigrations:
+    - cmd[vocacity]: cd $HOME && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
 
 
 success: |
