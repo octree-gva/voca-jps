@@ -16,6 +16,7 @@ globals:
   DB_USER: 'decidim_${fn.password(6)}'
   STRAPI_SESSION_KEY: '${fn.password(32)}'
   ADMIN_JWT_SECRET: '${fn.password(32)}'
+  JWT_SECRET: '${fn.password(32)}'
   API_TOKEN_SALT: '${fn.password(32)}'
   NEXTAUTH_SECRET: '${fn.password(32)}'
   REDIS_PASSWORD: '${fn.password(64)}'
@@ -25,15 +26,9 @@ settings:
     - name: TRAEFIK_ENVNAME
       caption: traefik env name
       type: string
-    - name: SERVICE_DISPLAY_NAME
-      type: string
-      caption: SaaS displayed name
     - name: SERVICE_HOST_NAME
       type: string
       caption: SaaS domain name
-    - name: JELASTIC_TOKEN
-      type: string
-      caption: Jelastic token with environment and marketplace perms.
     - name: SYSADMIN_EMAIL
       type: string
       caption: Email used for development support
@@ -48,7 +43,7 @@ nodes:
     isSLBAccessEnabled: false
     env:
       POSTGRES_PASSWORD: '${globals.DB_PASSWORD}'
-      POSTGRES_DB: decidim
+      POSTGRES_DB: strapi
       POSTGRES_USER: '${globals.DB_USER}'
       ADMINPANEL_ENABLED: false
       LC_ALL: 'en_US.UTF-8'
@@ -62,29 +57,30 @@ nodes:
     isSLBAccessEnabled: false
     env:
       ADMINPANEL_ENABLED: false
-  - displayName: "Ⓥ strapi"
-    fixedCloudlets: 4
+  - displayName: "strapi"
+    fixedCloudlets: 8
     flexibleCloudlets: 12
     diskLimit: 100G
     env:
       NODE_ENV: production
       PUBLIC_URL: 'api.${settings.SERVICE_HOST_NAME}'
       HOST: "0.0.0.0"
-      ADMIN_JWT_SECRET: '${settings.ADMIN_JWT_SECRET}'
-      API_TOKEN_SALT: '${settings.API_TOKEN_SALT}'
-      STRAPI_SESSION_KEY: '${settings.STRAPI_SESSION_KEY}'
+      JWT_SECRET: '${globals.JWT_SECRET}'
+      ADMIN_JWT_SECRET: '${globals.ADMIN_JWT_SECRET}'
+      API_TOKEN_SALT: '${globals.API_TOKEN_SALT}'
+      STRAPI_SESSION_KEY: '${globals.STRAPI_SESSION_KEY}'
       REDIS_PORT: "6379"
       REDIS_HOST: "redis"
       REDIS_USERNAME: "default"
-      REDIS_PASSWORD:  '${settings.REDIS_PASSWORD}'
+      REDIS_PASSWORD:  '${globals.REDIS_PASSWORD}'
       REDIS_DB: "0"
       SMTP_DEFAULT_FROM:  '${settings.SYSADMIN_EMAIL}'
       SMTP_DEFAULT_REPLYTO:  '${settings.SYSADMIN_EMAIL}'
       DATABASE_HOST: pg 
       DATABASE_PORT: 5432 
       DATABASE_NAME: strapi 
-      DATABASE_USERNAME: '${settings.DB_USER}' 
-      DATABASE_PASSWORD: '${settings.DB_PASSWORD}'
+      DATABASE_USERNAME: '${globals.DB_USER}' 
+      DATABASE_PASSWORD: '${globals.DB_PASSWORD}'
     links:
       - sqldb:pg
       - nosqldb:redis
@@ -97,15 +93,16 @@ nodes:
       - "/srv/app/backend/.env"
       - "/srv/app/backend/node_modules"
       - "/srv/app/backend/build"
-  - displayName: Ⓥ next 
+  - displayName: next
     fixedCloudlets: 4
     flexibleCloudlets: 30
     diskLimit: 5G
     env:
       PUBLIC_URL: 'app.${settings.SERVICE_HOST_NAME}'
       NODE_ENV: production
-      NEXTAUTH_SECRET: '${settings.NEXTAUTH_SECRET}'
-      NEXTAUTH_URL: 'api.${settings.SERVICE_HOST_NAME}'
+      STRAPI_URL: 'http://api'
+      NEXTAUTH_SECRET: '${globals.NEXTAUTH_SECRET}'
+      NEXTAUTH_URL: 'app.${settings.SERVICE_HOST_NAME}'
     links:
       - strapi:api
     isSLBAccessEnabled: false
@@ -120,6 +117,7 @@ nodes:
 
 onInstall:
   - redisSetPassword
+  - callbackAutopoiesis
 
 actions:
   redisSetPassword:
