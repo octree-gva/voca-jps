@@ -16,15 +16,9 @@ categories:
 
 settings:
   fields:
-    - name: SERVICE_DISPLAY_NAME
-      type: string
-      caption: SaaS displayed name
     - name: SERVICE_HOST_NAME
       type: string
       caption: SaaS domain name
-    - name: JELASTIC_TOKEN
-      type: string
-      caption: Jelastic token with environment and marketplace perms.
     - name: SYSADMIN_EMAIL
       type: string
       caption: Email used for development support
@@ -65,9 +59,7 @@ actions:
       loggerName: 'SYSTEM_INSTALL'
       settings:
         TRAEFIK_ENVNAME: ${env.envName}
-        SERVICE_DISPLAY_NAME: ${settings.SERVICE_DISPLAY_NAME}
         SERVICE_HOST_NAME: ${settings.SERVICE_HOST_NAME}
-        JELASTIC_TOKEN: ${settings.JELASTIC_TOKEN}
         SYSADMIN_EMAIL: ${settings.SYSADMIN_EMAIL}
 success: |
   Ready to run Decidim as a Service?
