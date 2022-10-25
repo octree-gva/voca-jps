@@ -70,7 +70,7 @@ nodes:
       API_TOKEN_SALT: '${globals.API_TOKEN_SALT}'
       STRAPI_SESSION_KEY: '${globals.STRAPI_SESSION_KEY}'
       REDIS_PORT: "6379"
-      REDIS_HOST: "redis"
+      REDIS_HOST: "red"
       REDIS_USERNAME: "default"
       REDIS_PASSWORD:  '${globals.REDIS_PASSWORD}'
       REDIS_DB: "0"
@@ -83,11 +83,9 @@ nodes:
       DATABASE_PASSWORD: '${globals.DB_PASSWORD}'
     links:
       - sqldb:pg
-      - nosqldb:redis
+      - nosqldb:red
     isSLBAccessEnabled: false
-    image: "decidim/vocacity/system/backend:latest"
-    registry:
-      url: 'git.octree.ch:4567'
+    image: "octree/voca-system-backend:latest"
     nodeGroup: strapi
     volumes:
       - "/srv/app/backend/.env"
@@ -106,9 +104,7 @@ nodes:
     links:
       - strapi:api
     isSLBAccessEnabled: false
-    image: decidim/vocacity/system/frontend:latest
-    registry:
-      url: 'git.octree.ch:4567'
+    image: octree/voca-system-frontend:latest
     nodeGroup: next
     volumes:
       - "/srv/app/frontend/.env"
