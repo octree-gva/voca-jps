@@ -41,6 +41,9 @@ fields:
   - type: string
     name: INSTANCE_UUID
     caption: INSTANCE_UUID
+  - type: string
+    name: SERVICE_NAME
+    caption: Used for traefik name
   - name: SMTP_HOST
     caption: SMTP_HOST
     type: string
