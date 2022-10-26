@@ -42,6 +42,8 @@ nodes:
     links:
       # Link to app in order to proxy_pass http://app
       - cp:app
+    skipNodeEmails: true
+
 
   # Decidim application
   - displayName: PUBLIC APP
@@ -208,13 +210,37 @@ actions:
 
 
 success: |
-  A new decidim is mounted ! Welcome ${settings.DECIDIM_NAME}
+  Someone created a decidim. This email contains private informations, and should
+  be deleted as soon as you review the instance [${settings.PUBLIC_DOMAIN}](${settings.PUBLIC_DOMAIN}).
 
-  * link: [https://${env.envName}.voca.city](https://${env.envName}.voca.city/)
-  * guid: ${settings.INSTANCE_UUID}
-  * contact: ${settings.ADMIN_EMAIL}
-  * currency: "${settings.DECIDIM_CURRENCY_UNIT}"
-  * primary locale: ${settings.DECIDIM_DEFAULT_LOCALE}
-  * secondary locales: ${settings.DECIDIM_AVAILABLE_LOCALES}
+  # Seed and compilation?
+  The seed and compilation are done over GRPC, and not on infrastructure setups.
+  The only permanent setting is the timezone: ${settings.TIMEZONE}.
+
+  # What is the Strapi reference.
+  Find it in your api cms under the instance #${echo settings.SERVICE_NAME | awk -F"-" '{ print $2 }'}
+
+  # Where is the routing file?
+  The routing file is under the "${settings.TRAEFIK_ENVNAME}" envname.
+  It is in the /config/hosts/${settings.SERVICE_NAME}.yml file.
+
+  # What are the secrets used in the installation?
+
+  * Postgres:
+    * password: ${globals.DB_PASSWORD}
+    * username: ${globals.DB_USER}
+  * Redis:
+    * password: ${globals.REDIS_PASSWORD}
+    * username: ${globals.REDIS_USER}
+  * Rails:
+    * APP_SESSION_KEY: ${globals.APP_SESSION_KEY}
+    * SECRET_KEY_BASE: ${globals.SECRET_KEY_BASE}
+    * MASTER_KEY: ${globals.MASTER_KEY}
+
+  # Next steps?
+  1. Go over the instance [${settings.PUBLIC_DOMAIN}](${settings.PUBLIC_DOMAIN}).
+  2. Check if the decidim is running.
+  3. Delete this email, or store it with strong encryption.
+
 
 startPage: https://${env.envName}.voca.city/
