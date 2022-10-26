@@ -5,8 +5,9 @@ logo: assets/decidim_logo.png
 
 onInstall:
   - restart_app
- 
+
 actions:
   restart_app:
-    - restartNode [cp]
-    - restartNode [vocacity]
+    - cmd[cp, vocacity]:
+      supervisord -c /home/decidim/app/supervisord.conf ctl stop workers:* \
+      && supervisord -c /home/decidim/app/supervisord.conf ctl start workers:*
