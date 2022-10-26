@@ -151,7 +151,7 @@ nodes:
     flexibleCloudlets: 12
     diskLimit: 100G
     nodeGroup: sqldb
-    image: postgres:12
+    image: postgres:14
     isSLBAccessEnabled: false
     env:
       POSTGRES_PASSWORD: '${globals.DB_PASSWORD}'

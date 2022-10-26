@@ -9,5 +9,5 @@ onInstall:
 actions:
   restart_app:
     - cmd[cp, vocacity]:
-      supervisord -c /home/decidim/app/supervisord.conf ctl stop workers:* \
-      && supervisord -c /home/decidim/app/supervisord.conf ctl start workers:*
+      - supervisord -c /home/decidim/app/supervisord.conf ctl stop workers:*
+      - supervisord -c /home/decidim/app/supervisord.conf ctl start workers:*
