@@ -4,10 +4,9 @@ baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 
 onInstall:
-  - restart_app
-
-actions:
-  restart_app:
-    - cmd[cp, vocacity]:
-      - supervisord -c /home/decidim/app/supervisord.conf ctl stop workers:*
-      - supervisord -c /home/decidim/app/supervisord.conf ctl start workers:*
+  - forEach(nodes.cp):
+      - restartContainer[${@i.id}]
+      - sleep: 5000
+  - forEach(nodes.vocacity):
+      - restartContainer[${@i.id}]
+      - sleep: 5000
