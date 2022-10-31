@@ -42,6 +42,7 @@ nodes:
       # Link to app in order to proxy_pass http://app
       - cp:app
     skipNodeEmails: true
+    isSLBAccessEnabled: false
 
 
   # Decidim application
@@ -221,7 +222,7 @@ success: |
 
   # Where is the routing file?
   The routing file is under the "${settings.TRAEFIK_ENVNAME}" envname.
-  It is in the /config/hosts/${settings.SERVICE_NAME}.yml file.
+  It is in the /config/hosts/${settings.SERVICE_HOST_NAME}/${settings.SERVICE_NAME}.yml file.
 
   # What are the secrets used in the installation?
 

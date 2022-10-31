@@ -12,6 +12,7 @@ var jps =
   settings = toJSON({
     URL: '${settings.PUBLIC_DOMAIN}',
     SERVICE_NAME: '${settings.SERVICE_NAME}',
+    SERVICE_HOST_NAME: '${settings.SERVICE_HOST_NAME}',
     ERROR_URL: '${settings.ERROR_URL}',
     ERROR_CODE: '502',
   });

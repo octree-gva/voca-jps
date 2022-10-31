@@ -12,12 +12,16 @@ settings:
     - name: SERVICE_NAME
       type: string
       caption: SERVICE_NAME
+    - name: SERVICE_HOST_NAME
+      type: string
+      caption: SERVICE_HOST_NAME
     - name: PUBLIC_DOMAIN
       type: string
       caption: PUBLIC_DOMAIN
     - name: ERROR_URL
       type: string
       caption: ERROR_URL
+
     - name: CODE
       type: string
       caption:
@@ -45,6 +49,7 @@ actions:
       settings:
         URL: ${settings.PUBLIC_DOMAIN}
         SERVICE_NAME: ${settings.SERVICE_NAME}
+        SERVICE_HOST_NAME: ${settings.SERVICE_HOST_NAME}
         LAN_IP: ${nodes.bl.master.intIP}
   not_ok_routing:
     - install:
@@ -54,5 +59,6 @@ actions:
       settings:
         URL: '${settings.PUBLIC_DOMAIN}'
         SERVICE_NAME: '${settings.SERVICE_NAME}'
+        SERVICE_HOST_NAME: '${settings.SERVICE_HOST_NAME}'
         ERROR_URL: '${settings.ERROR_URL}'
         ERROR_CODE: '${settings.CODE}'

@@ -24,21 +24,24 @@ settings:
     - name: SERVICE_NAME
       caption: SERVICE_NAME
       type: string
+    - name: SERVICE_HOST_NAME
+      caption: SERVICE_HOST_NAME
+      type: string
 
 onInstall:
   - cmd[cp]:
       - echo "[JELASTIC] ADD ${settings.SERVICE_NAME}" >> /var/log/run.log
       - export  URL="${settings.URL}" ERROR_URL="${settings.ERROR_URL}"
         ERROR_CODE="${settings.ERROR_CODE}"
-        SERVICE_NAME="${settings.SERVICE_NAME}"
+        SERVICE_NAME="${settings.SERVICE_NAME}" SERVICE_HOST_NAME="${settings.SERVICE_HOST_NAME}"
       - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim $URL is in
         maintenance\"" >> /var/log/run.log
       - curl -s
         "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-placeholder.yml"
         > /tmp/$SERVICE_NAME.yml
-      - cd /config/hosts
+      - cd /config/hosts && mkdir -p $SERVICE_HOST_NAME
       - (envsubst \$URL,\$SERVICE_NAME,\$ERROR_URL,\$ERROR_CODE <
-        /tmp/$SERVICE_NAME.yml) > ./$SERVICE_NAME.yml
+        /tmp/$SERVICE_NAME.yml) > ./$SERVICE_HOST_NAME/$SERVICE_NAME.yml
       - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim
-        $PWD/$SERVICE_NAME.yml up and running\"" >> /var/log/run.log
+        $PWD/$SERVICE_HOST_NAME/$SERVICE_NAME.yml up and running\"" >> /var/log/run.log
       - rm /tmp/$SERVICE_NAME.yml
