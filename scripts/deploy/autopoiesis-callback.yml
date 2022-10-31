@@ -32,7 +32,7 @@ onInstall:
       - curl -s
         "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-system.yml"
         > /tmp/traefik-system.yml
-      - cd /config/hosts
+      - cd /config/hosts && mkdir -p $SERVICE_HOST_NAME
       - (envsubst \$API_IPV4,\$APP_IPV4,\$SERVICE_HOST_NAME < /tmp/traefik-system.yml) >
-        ./traefik-system.yml
+        ./$SERVICE_HOST_NAME/traefik-system.yml
       - rm /tmp/$traefik-system.yml

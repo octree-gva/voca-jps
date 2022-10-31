@@ -18,6 +18,9 @@ settings:
     - name: PUBLIC_DOMAIN
       type: string
       caption: PUBLIC_DOMAIN
+    - name: SERVICE_HOST_NAME
+      type: string
+      caption: SERVICE_HOST_NAME
 
 onInstall:
   - log: UPDATE_DOMAIN
@@ -37,4 +40,5 @@ actions:
       settings:
         URL: ${settings.PUBLIC_DOMAIN}
         SERVICE_NAME: decidim-${settings.INSTANCE_UUID}
+        SERVICE_HOST_NAME: ${settings.SERVICE_HOST_NAME}
         LAN_IP: ${nodes.bl.master.intIP}
