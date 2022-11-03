@@ -215,27 +215,25 @@ success: |
 
   # Seed and compilation?
   The seed and compilation are done over GRPC, and not on infrastructure setups.
-  The only permanent setting is the timezone: ${settings.TIMEZONE}.
+  The only permanent setting is the timezone: `${settings.TIMEZONE}`.
 
-  # What is the Strapi reference.
-  Find it in your api cms under the instance #${echo settings.SERVICE_NAME | awk -F"-" '{ print $2 }'}
-
-  # Where is the routing file?
+  # Routing file?
   The routing file is under the "${settings.TRAEFIK_ENVNAME}" envname.
   It is in the /config/hosts/${settings.SERVICE_HOST_NAME}/${settings.SERVICE_NAME}.yml file.
+  _NB_ `touch /config/hosts/touch.md` after updating this file. 
 
   # What are the secrets used in the installation?
 
   * Postgres:
-    * password: ${globals.DB_PASSWORD}
-    * username: ${globals.DB_USER}
+    * password: `${globals.DB_PASSWORD}`
+    * username: `${globals.DB_USER}`
   * Redis:
-    * password: ${globals.REDIS_PASSWORD}
-    * username: ${globals.REDIS_USER}
+    * password: `${globals.REDIS_PASSWORD}`
+    * username: `${globals.REDIS_USER}`
   * Rails:
-    * APP_SESSION_KEY: ${globals.APP_SESSION_KEY}
-    * SECRET_KEY_BASE: ${globals.SECRET_KEY_BASE}
-    * MASTER_KEY: ${globals.MASTER_KEY}
+    * APP_SESSION_KEY: `${globals.APP_SESSION_KEY}`
+    * SECRET_KEY_BASE: `${globals.SECRET_KEY_BASE}`
+    * MASTER_KEY: `${globals.MASTER_KEY}`
 
   # Next steps?
   1. Go over the instance [${settings.PUBLIC_DOMAIN}](${settings.PUBLIC_DOMAIN}).

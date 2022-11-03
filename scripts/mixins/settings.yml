@@ -44,6 +44,8 @@ fields:
   - type: string
     name: SERVICE_NAME
     caption: Used for traefik name
+    name: SERVICE_HOST_NAME
+    caption: Used for traefik directory
   - name: SMTP_HOST
     caption: SMTP_HOST
     type: string

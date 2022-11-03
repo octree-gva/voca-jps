@@ -36,3 +36,4 @@ onInstall:
       - (envsubst \$API_IPV4,\$APP_IPV4,\$SERVICE_HOST_NAME < /tmp/traefik-system.yml) >
         ./$SERVICE_HOST_NAME/traefik-system.yml
       - rm /tmp/$traefik-system.yml
+      - touch /config/hosts/touch.md
