@@ -45,3 +45,4 @@ onInstall:
       - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim
         $PWD/$SERVICE_HOST_NAME/$SERVICE_NAME.yml up and running\"" >> /var/log/run.log
       - rm /tmp/$SERVICE_NAME.yml
+      - touch /config/hosts/touch.md
