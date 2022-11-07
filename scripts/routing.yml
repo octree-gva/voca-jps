@@ -1,6 +1,6 @@
 type: update
 name: Changing routing for a decidim instance
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.2
 logo: assets/decidim_logo.png
 
 settings:
