@@ -7,7 +7,7 @@ description:
   short: Decidim Saas
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.2
 logo: assets/decidim_logo.png
 
 settings:
@@ -33,7 +33,7 @@ onInstall:
       - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim $URL is binded
         to $LAN_IP\"" >> /var/log/run.log
       - curl -s
-        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-decidim.yml"
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.2/templates/traefik-decidim.yml"
         > /tmp/$SERVICE_NAME.yml
       - mkdir -p cd /config/hosts && cd /config/hosts && mkdir -p $SERVICE_HOST_NAME
       - (envsubst \$URL,\$SERVICE_NAME,\$LAN_IP < /tmp/$SERVICE_NAME.yml) >
