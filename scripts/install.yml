@@ -1,4 +1,4 @@
-jpsType: install
+jpsType: update
 jpsVersion: '1.7.4'
 
 name: Decidim/Install
@@ -15,20 +15,28 @@ ha: false
 mixins:
   - /scripts/mixins/globals.yml?_r=${fn.random}
 # Set environments values
-onBeforeInit: /scripts/deploy/settings.js?_r=${fn.random}
+onBeforeInit: /scripts/deploy/install-settings.js?_r=${fn.random}
 # Prepare Traefik Routing
 onBeforeInstall: /scripts/deploy/beforeInstall.js?_r=${fn.random}
 
 onInstall:
+  - setDisplayName
   - addEnvVars
 
 actions:
+  setDisplayName:
+    - env.control.SetEnvDisplayName:
+      displayName: "${settings.PUBLIC_URL}"
   addEnvVars:
-    - env.control.AddContainerEnvVars[cp, vocacity]
-      vars: {"TZ": "${settings.TIMEZONE}","DECIDIM_CURRENCY_UNIT": "${settings.DECIDIM_CURRENCY_UNIT}"}
-    - env.control.AddContainerEnvVars[bl]
-      vars: {"PUBLIC_URL": "${settings.PUBLIC_URL}"}
-    - env.control.RestartNodes[cp, vocacity]
+    - env.control.AddContainerEnvVars[cp, vocacity]:
+      vars: {"TZ":"${settings.TIMEZONE}","DECIDIM_CURRENCY_UNIT":"${settings.DECIDIM_CURRENCY_UNIT}"}
+    - env.control.AddContainerEnvVars[bl]:
+      vars: {"PUBLIC_URL":"${settings.PUBLIC_URL}"}
+    - env.control.ExecCmdByGroup[cp]:
+      - commandList: [{ "command": "cd $ROOT && bundle exec rails restart"}]
+      - sayYes: true
+      - async: false
+    - env.control.RestartNodes[vocacity]
 
 success: |
   The instance ${settings.PUBLIC_URL} is ready to be bound to ${env.envName}
