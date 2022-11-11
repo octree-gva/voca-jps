@@ -1,0 +1,24 @@
+onBeforeInit: return settings;
+
+fields:
+  - name: PUBLIC_URL
+    type: string
+    caption: PUBLIC_URL
+  - name: TRAEFIK_ENVNAME
+    type: string
+    caption: TRAEFIK_ENVNAME
+    default: vocacity-traefik
+  - name: PUBLIC_DOMAIN
+    type: string
+    caption: PUBLIC_DOMAIN
+  - name: DECIDIM_CURRENCY_UNIT
+    caption: DECIDIM_CURRENCY_UNIT
+    type: string
+  - type: string
+    name: TIMEZONE
+    caption: TIMEZONE
+  - type: string
+    name: SERVICE_NAME
+    caption: Used for traefik name
+    name: SERVICE_HOST_NAME
+    caption: Used for traefik directory

@@ -29,10 +29,6 @@ actions:
   notifySuccess:
     - cmd[vocacity]:
         - cd /home/decidim/app
-        - bundle exec rails vocacity:webhook
-          payload="{\"url\":\"${settings.DECIDIM_URL}\",\"envName\":\"${env.envName}\",
-          \"envUrl\":\"${env.url}\",\"envAppId\":\"${env.appid}\",\"envDomain\":\"${env.domain}\",
-          \"msg\":\"instance ready to use.\"}" name="decidim.ready" now="true"
         - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"Nginx for Decidim is
           ready\"" >> /var/log/run.log
 

@@ -46,7 +46,7 @@ actions:
       - mkdir -p /config/hosts && touch /config/traefik.yml
       - export SERVICE_HOST_NAME="${settings.SERVICE_HOST_NAME}" SYSADMIN_EMAIL="${settings.SYSADMIN_EMAIL}"
       - curl -s
-        "https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.2/templates/traefik.yml"
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik.yml"
         > /tmp/traefik.yml
       - cd /config
       - (envsubst \$SERVICE_HOST_NAME,\$SYSADMIN_EMAIL < /tmp/traefik.yml) >
