@@ -21,7 +21,7 @@ for digital democratic participation, many tools gravitates around Decidim._
 | [voca-tasks](https://github.com/octree-gva/voca-tasks)   | Gem embedded in our Decidim image. Manipulate and manage decidim instances. | v0.1.0         |
 | [voca-jps](https://github.com/octree-gva/voca-jps)       | Jelastic Manifest to deploy Decidim images                                  | v0.1.0         |
 | [voca-docker](https://github.com/octree-gva/voca-docker) | Build Decidim docker images for Voca                                        | v0.1.0         |
-| [voca-protos](https://github.com/octree-gva/voca-protos) | RPC prototypes for voca                                        | v0.1.0         |
+| [voca-protos](https://github.com/octree-gva/voca-protos) | RPC prototypes for voca                                                     | v0.1.0         |
 
 ## Contributing
 

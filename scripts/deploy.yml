@@ -1,10 +1,10 @@
 jpsType: install
 jpsVersion: '1.7.4'
 
-name: Infra/Decidim
-id: decidim-vanilla-infra
+name: Infra/DecidimEnv
+id: decidim-vanilla-infra-environment
 description:
-  short: Decidim Saas
+  short: Create a dummy Decidim environment
 categories:
   - apps/platforms
 baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
@@ -15,12 +15,10 @@ ha: false
 mixins:
   - /scripts/mixins/globals.yml?_r=${fn.random}
 # Set environments values
-onBeforeInit: /scripts/deploy/settings.js?_r=${fn.random}
-# Prepare Traefik Routing
-onBeforeInstall: /scripts/deploy/beforeInstall.js?_r=${fn.random}
+onBeforeInit: /scripts/deploy/deploy-settings.js?_r=${fn.random}
 
 nodes:
-  - displayName: NGinx
+  - displayName: nginx
     fixedCloudlets: 3
     flexibleCloudlets: 16
     diskLimit: 5G
@@ -46,7 +44,7 @@ nodes:
 
 
   # Decidim application
-  - displayName: PUBLIC APP
+  - displayName: public
     fixedCloudlets: 4
     flexibleCloudlets: 16
     diskLimit: 100G
@@ -66,7 +64,6 @@ nodes:
       CACHE_REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/0'
       RAILS_JOB_MODE: 'sidekiq'
       JOB_REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/1'
-      TZ: '${settings.TIMEZONE}'
       DECIDIM_RUN_PUMA: '1'
       DECIDIM_RUN_SIDEKIQ: '0'
       DECIDIM_RUN_GRPC: '0'
@@ -96,7 +93,7 @@ nodes:
         sourcePath: '/migrations'
 
   # Decidim runner (sidekiq+tasks)
-  - displayName: RUNNER
+  - displayName: worker
     fixedCloudlets: 4
     flexibleCloudlets: 30 # needed for compilation time.
     diskLimit: 5G
@@ -112,11 +109,9 @@ nodes:
       CACHE_REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/0'
       RAILS_JOB_MODE: 'sidekiq'
       JOB_REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/1'
-      TZ: '${settings.TIMEZONE}'
       DOCKER_EXPOSED_PORT: 3000
       PORT: 3000
       WEBHOOK_URL: '${settings.WEBHOOK_URL}'
-      DECIDIM_CURRENCY_UNIT: '${settings.DECIDIM_CURRENCY_UNIT}'
       DECIDIM_RUN_PUMA: '0'
       DECIDIM_RUN_SIDEKIQ: '1'
       DECIDIM_RUN_GRPC: '1'
@@ -146,7 +141,7 @@ nodes:
         sourcePath: '/migrations'
 
   # DATA : postgres database
-  - displayName: PG
+  - displayName: postgres
     fixedCloudlets: 3
     flexibleCloudlets: 12
     diskLimit: 100G
@@ -163,7 +158,7 @@ nodes:
       - '/var/lib/postgresql/data'
 
   # Cache and Queue
-  - displayName: Redis
+  - displayName: redis
     image: jelastic/redis:6.2.6
     fixedCloudlets: 2
     flexibleCloudlets: 16
@@ -173,7 +168,7 @@ nodes:
       ADMINPANEL_ENABLED: false
 
   # DATA : shared public folder
-  - displayName: Shared Files
+  - displayName: files
     cloudlets: 2
     diskLimit: 100G
     nodeGroup: storage
@@ -202,12 +197,9 @@ actions:
       jps: scripts/deploy/nginx-conf.yml?_r=${fn.random}
       envName: ${env.envName}
       loggerName: 'Decidim-Nginx'
-      settings:
-        DECIDIM_URL: ${settings.PUBLIC_URL}
     - restartNode [bl]
   createMigrations:
     - cmd[vocacity]: cd $HOME && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
-
 
 success: |
   Someone created a decidim. This email contains private informations, and should
@@ -218,9 +210,7 @@ success: |
   The only permanent setting is the timezone: `${settings.TIMEZONE}`.
 
   # Routing file?
-  The routing file is under the "${settings.TRAEFIK_ENVNAME}" envname.
-  It is in the /config/hosts/${settings.SERVICE_HOST_NAME}/${settings.SERVICE_NAME}.yml file.
-  _NB_ `touch /config/hosts/touch.md` after updating this file. 
+  The routing file is not defined yet, as the environment is not bound to an instance.
 
   # What are the secrets used in the installation?
 
@@ -236,9 +226,4 @@ success: |
     * MASTER_KEY: `${globals.MASTER_KEY}`
 
   # Next steps?
-  1. Go over the instance [${settings.PUBLIC_DOMAIN}](${settings.PUBLIC_DOMAIN}).
-  2. Check if the decidim is running.
-  3. Delete this email, or store it with strong encryption.
-
-
-startPage: https://${env.envName}.voca.city/
+  Bind an instance.

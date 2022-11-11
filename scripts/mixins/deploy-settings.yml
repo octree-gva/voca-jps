@@ -1,19 +1,10 @@
 onBeforeInit: return settings;
 
 fields:
-  - name: PUBLIC_URL
-    type: string
-    caption: PUBLIC_URL
   - name: TRAEFIK_ENVNAME
     type: string
     caption: TRAEFIK_ENVNAME
     default: vocacity-traefik
-  - name: PUBLIC_DOMAIN
-    type: string
-    caption: PUBLIC_DOMAIN
-  - name: DECIDIM_CURRENCY_UNIT
-    caption: DECIDIM_CURRENCY_UNIT
-    type: string
   - name: IMAGE_REGISTRY
     type: string
     caption: IMAGE_REGISTRY
@@ -27,9 +18,6 @@ fields:
     caption: IMAGE_PASSWORD
     type: string
   - type: string
-    name: TIMEZONE
-    caption: TIMEZONE
-  - type: string
     name: ERROR_URL
     caption: ERROR_URL
   - type: string
@@ -41,10 +29,7 @@ fields:
   - type: string
     name: INSTANCE_UUID
     caption: INSTANCE_UUID
-  - type: string
-    name: SERVICE_NAME
-    caption: Used for traefik name
-    name: SERVICE_HOST_NAME
+  - name: SERVICE_HOST_NAME
     caption: Used for traefik directory
   - name: SMTP_HOST
     caption: SMTP_HOST
@@ -73,9 +58,3 @@ fields:
   - type: string
     name: SMTP_READ_TIMEOUT
     caption: SMTP_READ_TIMEOUT
-  - type: string
-    name: BACKUP_CYPHER_KEY
-    caption: BACKUP_CYPHER_KEY
-  - type: string
-    name: BACKUP_CYPHER_IV
-    caption: BACKUP_CYPHER_IV

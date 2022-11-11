@@ -1,0 +1,35 @@
+jpsType: install
+jpsVersion: '1.7.4'
+
+name: Decidim/Install
+id: decidim-vanilla-decidim-install
+description:
+  short: Install Decidim on a dummy environment
+categories:
+  - apps/platforms
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+logo: assets/decidim_logo.png
+ssl: true
+ha: false
+
+mixins:
+  - /scripts/mixins/globals.yml?_r=${fn.random}
+# Set environments values
+onBeforeInit: /scripts/deploy/settings.js?_r=${fn.random}
+# Prepare Traefik Routing
+onBeforeInstall: /scripts/deploy/beforeInstall.js?_r=${fn.random}
+
+onInstall:
+  - addEnvVars
+
+actions:
+  addEnvVars:
+    - env.control.AddContainerEnvVars[cp, vocacity]
+      vars: {"TZ": "${settings.TIMEZONE}","DECIDIM_CURRENCY_UNIT": "${settings.DECIDIM_CURRENCY_UNIT}"}
+    - env.control.AddContainerEnvVars[bl]
+      vars: {"PUBLIC_URL": "${settings.PUBLIC_URL}"}
+    - env.control.RestartNodes[cp, vocacity]
+
+success: |
+  The instance ${settings.PUBLIC_URL} is ready to be bound to ${env.envName}
+startPage: ${settings.PUBLIC_URL}
