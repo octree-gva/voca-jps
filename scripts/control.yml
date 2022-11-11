@@ -1,6 +1,6 @@
 type: update
 name: Start/Sleep/Stop Environment
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.2
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 
 settings:

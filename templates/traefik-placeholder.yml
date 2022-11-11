@@ -12,8 +12,8 @@ http:
   middlewares:
     error-assets-$SERVICE_NAME:
       redirectRegex:
-        regex: '^https://([a-z0-9-]*).voca.city/(_next|static|logo.png|api|favicon)(.*)'
-        replacement: 'https://app.voca.city/${2}${3}'
+        regex: '^https://([a-z0-9-]*).$SERVICE_HOST_NAME/(_next|static|logo.png|api|favicon)(.*)'
+        replacement: 'https://app.$SERVICE_HOST_NAME/${2}${3}'
     error-$SERVICE_NAME:
       replacePath:
         path: '/errors/$ERROR_CODE'
