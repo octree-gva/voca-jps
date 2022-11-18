@@ -112,6 +112,12 @@ nodes:
       DOCKER_EXPOSED_PORT: 3000
       PORT: 3000
       WEBHOOK_URL: '${settings.WEBHOOK_URL}'
+      SMTP_ADDRESS: '${settings.SMTP_HOST}'
+      SMTP_PORT: '${settings.SMTP_PORT}'
+      SMTP_AUTHENTICATION: '${settings.SMTP_AUTHENTICATION}'
+      SMTP_USERNAME: '${settings.SMTP_USERNAME}'
+      SMTP_PASSWORD: '${settings.SMTP_PASSWORD}'
+      SMTP_DOMAIN: '${settings.SMTP_HELO_DOMAIN}'
       DECIDIM_RUN_PUMA: '0'
       DECIDIM_RUN_SIDEKIQ: '1'
       DECIDIM_RUN_GRPC: '1'
