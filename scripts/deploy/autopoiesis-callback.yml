@@ -8,7 +8,7 @@ description:
 categories:
   - apps/platforms
 
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.3
 logo: assets/decidim_logo.png
 
 
@@ -30,7 +30,7 @@ onInstall:
       - echo "[JELASTIC] APP to ${settings.APP_IPV4}" >> /var/log/run.log
       - export  API_IPV4="${settings.API_IPV4}" APP_IPV4="${settings.APP_IPV4}" SERVICE_HOST_NAME="${settings.SERVICE_HOST_NAME}"
       - curl -s
-        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-system.yml"
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.3/templates/traefik-system.yml"
         > /tmp/traefik-system.yml
       - cd /config/hosts && mkdir -p $SERVICE_HOST_NAME
       - (envsubst \$API_IPV4,\$APP_IPV4,\$SERVICE_HOST_NAME < /tmp/traefik-system.yml) >
