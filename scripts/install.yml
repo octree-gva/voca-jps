@@ -7,7 +7,7 @@ description:
   short: Install Decidim on a dummy environment
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.3
 logo: assets/decidim_logo.png
 ssl: true
 ha: false
@@ -23,11 +23,11 @@ actions:
     - env.control.SetEnvDisplayName:
       displayName: "${settings.PUBLIC_URL}"
   addEnvVars:
-    - env.control.AddContainerEnvVars[cp, vocacity]:
+    - env.control.AddContainerEnvVars[cp]:
       vars: {"TZ":"${settings.TIMEZONE}","DECIDIM_CURRENCY_UNIT":"${settings.DECIDIM_CURRENCY_UNIT}"}
     - env.control.AddContainerEnvVars[bl]:
       vars: {"PUBLIC_URL":"${settings.PUBLIC_URL}"}
-    - env.control.RestartNodes[vocacity,cp]
+    - env.control.RestartNodes[cp]
 
 success: |
   The instance ${settings.PUBLIC_URL} is ready to be bound to ${env.envName}
