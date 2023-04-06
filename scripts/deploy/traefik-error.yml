@@ -7,7 +7,7 @@ description:
   short: Decidim Saas
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.3
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 
 settings:
@@ -37,7 +37,7 @@ onInstall:
       - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim $URL is in
         maintenance\"" >> /var/log/run.log
       - curl -s
-        "https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.3/templates/traefik-placeholder.yml"
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-placeholder.yml"
         > /tmp/$SERVICE_NAME.yml
       - cd /config/hosts && mkdir -p $SERVICE_HOST_NAME
       - (envsubst \$URL,\$SERVICE_NAME,\$ERROR_URL,\$ERROR_CODE <

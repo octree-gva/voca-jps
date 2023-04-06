@@ -7,7 +7,7 @@ var log = function (message) {
 };
 
 var jps =
-    'https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.3/scripts/deploy/traefik-error.yml?_r=${fn.random}',
+    'https://raw.githubusercontent.com/octree-gva/voca-jps/main/scripts/deploy/traefik-error.yml?_r=${fn.random}',
   envName = '${settings.TRAEFIK_ENVNAME}',
   settings = toJSON({
     URL: '${settings.PUBLIC_DOMAIN}',
