@@ -7,7 +7,7 @@ description:
   short: Decidim Saas
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.3
 logo: assets/decidim_logo.png
 
 settings:
@@ -24,10 +24,10 @@ actions:
   setConfigs:
     - cmd[bl]:
         - curl -s
-          "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/nginx.conf"
+          "https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.3/templates/nginx.conf"
           > /etc/nginx/nginx-jelastic.conf
   notifySuccess:
-    - cmd[vocacity]:
+    - cmd[cp]:
         - cd /home/decidim/app
         - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"Nginx for Decidim is
           ready\"" >> /var/log/run.log
