@@ -7,7 +7,7 @@ description:
   short: Create a dummy Decidim environment
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/feat/0.26
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 ssl: true
 ha: false
@@ -189,15 +189,14 @@ onInstall:
 actions:
   nginxSetup:
     - cmd[nginxSetup]: |
-      apk add --update --no-cache restic nginx
-      mkdir -p /var/nginx/tmp/ /var/log/nginx \
-      addgroup nginx 
-      adduser -S nginx -G nginx \
-      adduser decidim nginx
-      chown -R nginx:nginx /var/nginx/ /var/log/nginx/
-      mkdir -p $ROOT/log
-      ln -s $ROOT/log /var/log/decidim\
-      chown decidim:decidim $ROOT/log
+        apk add --update --no-cache restic nginx;
+        mkdir -p /var/nginx/tmp/ /var/log/nginx;
+        addgroup nginx;
+        adduser -S nginx -G nginx;
+        adduser decidim nginx;
+        chown -R nginx:nginx /var/nginx/ /var/log/nginx/;
+        mkdir -p $ROOT/log;
+        ln -s $ROOT/log /var/log/decidim;
   createMigrations:
     - cmd[cp]: cd $HOME && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
 
