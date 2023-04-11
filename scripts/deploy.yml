@@ -160,24 +160,13 @@ nodes:
       - /migrations
 
 onInstall:
-  - nginxSetup
   - fixVolumes
   - createMigrations
 
 actions:
-  nginxSetup:
-    - cmd[cp]:
-      - apk add --update --no-cache restic nginx
-      - mkdir -p /var/nginx/tmp/ /var/log/nginx
-      - addgroup nginx
-      - adduser -S nginx -G nginx
-      - adduser decidim nginx
-      - chown -R nginx:nginx /var/nginx/ /var/log/nginx/
-      - mkdir -p $ROOT/log
-      - ln -s $ROOT/log /var/log/decidim
   fixVolumes:
     - cmd[cp]: |
-        cd $ROOT && tar xvfz tmp/volumes
+        cd $ROOT && tar xvfz /tmp/volumes.tar.gz
   createMigrations:
     - cmd[cp]: cd $ROOT && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
 
