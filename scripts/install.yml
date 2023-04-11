@@ -15,8 +15,12 @@ ha: false
 onBeforeInit: /scripts/deploy/install-settings.js?_r=${fn.random}
 
 onInstall:
+  # Update the display name from parked to the display name
   - setDisplayName
+  # Update the environment vars
   - addEnvVars
+  # Install new migration if the template requires new 
+  - createMigrations
 
 actions:
   setDisplayName:
@@ -28,6 +32,8 @@ actions:
     - env.control.AddContainerEnvVars[bl]:
       vars: {"PUBLIC_URL":"${settings.PUBLIC_URL}"}
     - env.control.RestartNodes[cp]
+  createMigrations:
+    - cmd[cp]: cd $HOME && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
 
 success: |
   The instance ${settings.PUBLIC_URL} is ready to be bound to ${env.envName}

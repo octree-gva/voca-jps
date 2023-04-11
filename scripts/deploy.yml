@@ -18,30 +18,6 @@ mixins:
 onBeforeInit: /scripts/deploy/deploy-settings.js?_r=${fn.random}
 
 nodes:
-  - displayName: nginx
-    fixedCloudlets: 3
-    flexibleCloudlets: 16
-    diskLimit: 5G
-    nodeGroup: bl
-    nodeType: nginx-dockerized
-    tag: 1.20.2
-    volumes:
-      - /public
-      - /etc/nginx/nginx-jelastic.conf
-      - /etc/jelastic/redeploy.conf
-    volumeMounts:
-      # Serve assets from the storage node
-      /public:
-        protocol: NFS4
-        readOnly: true
-        sourceNodeGroup: storage
-        sourcePath: '/data'
-    links:
-      # Link to app in order to proxy_pass http://app
-      - cp:app
-    skipNodeEmails: true
-    isSLBAccessEnabled: false
-
   # Decidim application
   - displayName: public
     fixedCloudlets: 4
@@ -63,6 +39,7 @@ nodes:
       RAILS_CACHE_MODE: 'memcached'
       RAILS_JOB_MODE: 'sidekiq'
       REDIS_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/1'
+      REDIS_CONFIG_URL: 'redis://default:${globals.REDIS_PASSWORD}@redis:6379/2'
       DECIDIM_RUN_PUMA: '1'
       DECIDIM_RUN_SIDEKIQ: '1'
       DECIDIM_RUN_GRPC: '1'
@@ -184,11 +161,12 @@ nodes:
 
 onInstall:
   - nginxSetup
+  - fixVolumes
   - createMigrations
 
 actions:
   nginxSetup:
-    - cmd[nginxSetup]: |
+    - cmd[cp]: |
         apk add --update --no-cache restic nginx;
         mkdir -p /var/nginx/tmp/ /var/log/nginx;
         addgroup nginx;
@@ -197,8 +175,11 @@ actions:
         chown -R nginx:nginx /var/nginx/ /var/log/nginx/;
         mkdir -p $ROOT/log;
         ln -s $ROOT/log /var/log/decidim;
+  fixVolumes:
+    - cmd[cp]: |
+        cd $ROOT && tar xvfz tmp/volumes
   createMigrations:
-    - cmd[cp]: cd $HOME && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
+    - cmd[cp]: cd $ROOT && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
 
 success: |
   Voca parked a decidim
