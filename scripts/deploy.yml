@@ -157,7 +157,6 @@ nodes:
       HOME_DIR: '/data'
     volumes:
       - /data
-      - /migrations
 
 onInstall:
   - dependancies
@@ -168,11 +167,9 @@ actions:
   dependancies:
     - cmd[cp]:
       - apk add --update --no-cache restic nginx musl-dev npm
-      - mkdir -p /var/nginx/tmp/ /var/log/nginx
-      - addgroup nginx
-      - adduser -S nginx -G nginx
       - adduser decidim nginx
       - chown -R nginx:nginx /var/nginx/ /var/log/nginx/
+      - cd $ROOT
       - bundle binstubs gruf --force
     - cmd[storage]:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
