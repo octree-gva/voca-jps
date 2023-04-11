@@ -1,0 +1,5 @@
+voca:
+  gems:
+    decidim-voca:
+      git: "https://github.com/octree-gva/voca-tasks.git"
+      branch: "release/0.26-stable"

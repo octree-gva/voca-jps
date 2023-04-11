@@ -1,6 +1,10 @@
 onBeforeInit: return settings;
 
 fields:
+  - name: TEMPLATE_NAME
+    type: string
+    caption: TEMPLATE_NAME
+    default: vanilla
   - name: TRAEFIK_ENVNAME
     type: string
     caption: TRAEFIK_ENVNAME

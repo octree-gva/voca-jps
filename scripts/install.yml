@@ -21,6 +21,7 @@ onInstall:
   - addEnvVars
   # Install new migration if the template requires new 
   - createMigrations
+  - prepare
 
 actions:
   setDisplayName:
@@ -33,7 +34,12 @@ actions:
       vars: {"PUBLIC_URL":"${settings.PUBLIC_URL}"}
     - env.control.RestartNodes[cp]
   createMigrations:
-    - cmd[cp]: cd $HOME && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
+    - cmd[cp]: cd $ROOT && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
+  prepare:
+    - cmd[cp]: |
+        cd $ROOT;
+        bundle exec rails db:migrate;
+        bundle exec rails assets:precompile;
 
 success: |
   The instance ${settings.PUBLIC_URL} is ready to be bound to ${env.envName}
