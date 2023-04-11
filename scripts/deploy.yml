@@ -170,6 +170,7 @@ actions:
       - adduser decidim nginx
       - chown -R nginx:nginx /var/nginx/ /var/log/nginx/
       - cd $ROOT
+      - bundle
       - bundle binstubs gruf --force
     - cmd[storage]:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
@@ -177,7 +178,7 @@ actions:
   volumes:
     - cmd[cp]:
       - cd $ROOT
-      - tar xvfz tmp/volumes.tar.gz
+      - tar xvfz tmp/volumes.tar.gz /
       - chown -R decidim:decidim public db/migrate storage config
   finalize:
     - cmd[cp]: 
