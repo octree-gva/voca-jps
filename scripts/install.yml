@@ -34,7 +34,9 @@ actions:
       vars: {"PUBLIC_URL":"${settings.PUBLIC_URL}"}
     - env.control.RestartNodes[cp]
   createMigrations:
-    - cmd[cp]: cd $ROOT && bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
+    - cmd[cp]: |
+        cd $ROOT;
+        bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
   prepare:
     - cmd[cp]: |
         cd $ROOT;
