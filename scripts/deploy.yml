@@ -169,9 +169,6 @@ actions:
       - apk add --update --no-cache restic nginx musl-dev npm
       - adduser decidim nginx
       - chown -R nginx:nginx /var/nginx/ /var/log/nginx/
-      - cd $ROOT
-      - bundle
-      - bundle binstubs gruf --force
     - cmd[storage]:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
       - yum install -y restic
@@ -183,6 +180,8 @@ actions:
   finalize:
     - cmd[cp]: 
       - cd $ROOT
+      - bundle
+      - bundle binstubs gruf --force
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - npm ci
