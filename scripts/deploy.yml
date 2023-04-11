@@ -166,15 +166,15 @@ onInstall:
 
 actions:
   nginxSetup:
-    - cmd[cp]: |
-        apk add --update --no-cache restic nginx;
-        mkdir -p /var/nginx/tmp/ /var/log/nginx;
-        addgroup nginx;
-        adduser -S nginx -G nginx;
-        adduser decidim nginx;
-        chown -R nginx:nginx /var/nginx/ /var/log/nginx/;
-        mkdir -p $ROOT/log;
-        ln -s $ROOT/log /var/log/decidim;
+    - cmd[cp]:
+      - apk add --update --no-cache restic nginx
+      - mkdir -p /var/nginx/tmp/ /var/log/nginx
+      - addgroup nginx;
+      - adduser -S nginx -G nginx
+      - adduser decidim nginx;
+      - chown -R nginx:nginx /var/nginx/ /var/log/nginx/
+      - mkdir -p $ROOT/log;
+      - ln -s $ROOT/log /var/log/decidim;
   fixVolumes:
     - cmd[cp]: |
         cd $ROOT && tar xvfz tmp/volumes
