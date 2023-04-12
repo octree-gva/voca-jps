@@ -41,4 +41,4 @@ actions:
         URL: ${settings.PUBLIC_DOMAIN}
         SERVICE_NAME: decidim-${settings.INSTANCE_UUID}
         SERVICE_HOST_NAME: ${settings.SERVICE_HOST_NAME}
-        LAN_IP: ${nodes.bl.master.intIP}
+        LAN_IP: ${nodes.cp.master.intIP}
