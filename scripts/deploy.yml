@@ -20,7 +20,7 @@ onBeforeInit: /scripts/deploy/deploy-settings.js?_r=${fn.random}
 nodes:
   # Decidim application
   - displayName: public
-    fixedCloudlets: 5
+    fixedCloudlets: 9
     flexibleCloudlets: 24
     diskLimit: 100G
     count: 1
@@ -172,7 +172,7 @@ actions:
       - adduser decidim nginx
       - mkdir -p /var/log/nginx/ /var/nginx/tmp/ /var/lib/nginx/logs /var/lib/nginx/tmp/ /home/decidim/app/tmp/pids
       - touch /var/lib/nginx/logs/error.log /var/lib/nginx/logs/access.log
-      - chown -R decidim:decidim /etc/nginx/ /var/log/nginx/ /var/nginx/tmp/ /var/lib/nginx/logs /var/lib/nginx/tmp/ /home/decidim/app/tmp
+      - chown -R decidim:decidim /etc/nginx /var/log/nginx /var/nginx/tmp /var/lib/nginx /home/decidim/app/tmp
     - cmd[storage]:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
       - yum install -y restic
@@ -183,6 +183,7 @@ actions:
       - chown -R decidim:decidim public db/migrate storage config
   installation:
     - cmd[cp]: 
+      - crontab /usr/local/share/crontab.template
       - cd $ROOT
       - bundle
       - bundle binstubs gruf --force
