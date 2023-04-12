@@ -20,8 +20,8 @@ onBeforeInit: /scripts/deploy/deploy-settings.js?_r=${fn.random}
 nodes:
   # Decidim application
   - displayName: public
-    fixedCloudlets: 4
-    flexibleCloudlets: 16
+    fixedCloudlets: 5
+    flexibleCloudlets: 24
     diskLimit: 100G
     count: 1
     env:
@@ -147,7 +147,8 @@ nodes:
 
   # DATA : shared public folder
   - displayName: files
-    cloudlets: 2
+    fixedCloudlets: 1
+    flexibleCloudlets: 5
     diskLimit: 100G
     nodeGroup: storage
     nodeType: storage
@@ -161,23 +162,26 @@ nodes:
 onInstall:
   - dependancies
   - volumes
+  - installation
   - finalize
 
 actions:
   dependancies:
     - cmd[cp]:
-      - apk add --update --no-cache restic nginx musl-dev npm
+      - apk add --update --no-cache restic nginx musl-dev npm yarn
       - adduser decidim nginx
-      - chown -R nginx:nginx /var/nginx/ /var/log/nginx/
+      - mkdir -p /var/log/nginx/ /var/nginx/tmp/ /var/lib/nginx/logs /var/lib/nginx/tmp/ /home/decidim/app/tmp/pids
+      - touch /var/lib/nginx/logs/error.log /var/lib/nginx/logs/access.log
+      - chown -R decidim:decidim /etc/nginx/ /var/log/nginx/ /var/nginx/tmp/ /var/lib/nginx/logs /var/lib/nginx/tmp/ /home/decidim/app/tmp
     - cmd[storage]:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
       - yum install -y restic
   volumes:
     - cmd[cp]:
       - cd $ROOT
-      - tar xvfz tmp/volumes.tar.gz /
+      - tar xvfz tmp/volumes.tar.gz -C /
       - chown -R decidim:decidim public db/migrate storage config
-  finalize:
+  installation:
     - cmd[cp]: 
       - cd $ROOT
       - bundle
@@ -187,8 +191,13 @@ actions:
       - npm ci
       - bundle exec rails db:migrate
       - bundle exec rails assets:precompile
+  finalize:
+    - cmd[cp]: 
       - mkdir -p /home/decidim/app/log
       - ln -s /home/decidim/app/log /var/log/decidim
       - chown decidim:decidim /home/decidim/app/log
+    - forEach(nodes.cp):
+        - restartContainer[${@i.id}]
+
 success: |
   Voca parked a decidim
