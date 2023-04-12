@@ -70,12 +70,18 @@ nodes:
         - /home/decidim/app/db/migrate
         - /home/decidim/app/config
         - /home/decidim/app/storage
+        - /home/decidim/app/log
     volumeMounts:
       /home/decidim/app/public:
         protocol: NFS4
         readOnly: false
         sourceNodeGroup: storage
         sourcePath: '/data/v026/rails/public'
+      /home/decidim/app/log:
+        protocol: NFS4
+        readOnly: false
+        sourceNodeGroup: storage
+        sourcePath: '/data/v026/rails/log'
       /home/decidim/app/db/migrate:
         protocol: NFS4
         readOnly: false
