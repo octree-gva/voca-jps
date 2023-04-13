@@ -35,8 +35,8 @@ fields:
     caption: INSTANCE_UUID
   - name: SERVICE_HOST_NAME
     caption: Used for traefik directory
-  - name: SMTP_HOST
-    caption: SMTP_HOST
+  - name: SMTP_ADDRESS
+    caption: SMTP_ADDRESS
     type: string
   - name: SMTP_DOMAIN
     caption: SMTP_DOMAIN
@@ -54,8 +54,8 @@ fields:
     name: SMTP_AUTHENTICATION
     caption: SMTP_AUTHENTICATION
   - type: string
-    name: SMTP_HELO_DOMAIN
-    caption: SMTP_HELO_DOMAIN
+    name: SMTP_DOMAIN
+    caption: SMTP_DOMAIN
   - type: string
     name: SMTP_OPEN_TIMEOUT
     caption: SMTP_OPEN_TIMEOUT
