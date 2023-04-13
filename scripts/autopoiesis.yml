@@ -8,6 +8,7 @@ logo: assets/decidim_logo.png
 ssl: true
 ha: false
 envGroups: 'vocacity'
+skipNodeEmails: true
 
 description:
   short: Your saas for civic techs

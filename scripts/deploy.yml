@@ -11,6 +11,7 @@ baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 ssl: true
 ha: false
+skipNodeEmails: true
 
 mixins:
   - /scripts/mixins/globals.yml?_r=${fn.random}
@@ -181,7 +182,7 @@ actions:
       - chown -R decidim:decidim /etc/nginx /var/log/nginx /var/nginx/tmp /var/lib/nginx /home/decidim/app/tmp
     - cmd[storage]:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
-      - yum install -y restic
+      - yum install -y restic jq
   volumes:
     - cmd[cp]:
       - cd $ROOT
