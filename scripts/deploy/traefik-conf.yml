@@ -26,7 +26,7 @@ settings:
       type: string
 
 onInstall:
-  - cmd[cp]:
+  - cmd[bl,cp]:
       - echo "[JELASTIC] ADD ${settings.SERVICE_NAME} (${settings.SERVICE_HOST_NAME})" >> /var/log/run.log
       - export  URL="${settings.URL}" LAN_IP="${settings.LAN_IP}"
         SERVICE_NAME="${settings.SERVICE_NAME}" SERVICE_HOST_NAME="${settings.SERVICE_HOST_NAME}"
@@ -42,4 +42,4 @@ onInstall:
         $PWD/$SERVICE_HOST_NAME/$SERVICE_NAME.yml up and running\"" >> /var/log/run.log
       - rm /tmp/$SERVICE_NAME.yml
       - touch /config/hosts/touch.md
-      - curl -s "$URL" > /dev/null # Fire http requests, to generate a certificate
+      - curl -s "$URL" > /dev/null 

@@ -65,9 +65,4 @@ actions:
 success: |
   Ready to run Decidim as a Service?
 
-  * Setup your DNS: `A    *.${settings.SERVICE_HOST_NAME}   ${nodes.bl.master.intIP}`
-  * Setup your Strapi Mailer env (see envs variables SMTP_*)
-  * Go to https://api.${settings.SERVICE_HOST_NAME} and create your strapi CMS
-  * Ready to go, you can distribute Decidim!
-
 startPage: https://app.${settings.SERVICE_HOST_NAME}

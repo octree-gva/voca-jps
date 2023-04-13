@@ -50,7 +50,7 @@ actions:
         URL: ${settings.PUBLIC_DOMAIN}
         SERVICE_NAME: ${settings.SERVICE_NAME}
         SERVICE_HOST_NAME: ${settings.SERVICE_HOST_NAME}
-        LAN_IP: ${nodes.bl.master.intIP}
+        LAN_IP: ${nodes.cp.master.intIP}
   not_ok_routing:
     - install:
       jps: scripts/deploy/traefik-error.yml?_r=${fn.random}
