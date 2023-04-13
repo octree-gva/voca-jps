@@ -42,4 +42,4 @@ onInstall:
         $PWD/$SERVICE_HOST_NAME/$SERVICE_NAME.yml up and running\"" >> /var/log/run.log
       - rm /tmp/$SERVICE_NAME.yml
       - touch /config/hosts/touch.md
-      - curl -s "$URL" > /dev/null # Fire http requests, to generate a certificate
+      - curl -s "$URL" > /dev/null 
