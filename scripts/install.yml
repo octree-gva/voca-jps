@@ -31,7 +31,7 @@ actions:
   addEnvVars:
     - env.control.AddContainerEnvVars[cp]:
       vars: {"TZ":"${settings.TIMEZONE}","DECIDIM_CURRENCY_UNIT":"${settings.DECIDIM_CURRENCY_UNIT}"}
-    - env.control.AddContainerEnvVars[bl]:
+    - env.control.AddContainerEnvVars[cp]:
       vars: {"PUBLIC_URL":"${settings.PUBLIC_URL}"}
     - env.control.RestartNodes[cp]
   createMigrations:

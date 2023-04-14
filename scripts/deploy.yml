@@ -55,7 +55,7 @@ nodes:
       SMTP_DOMAIN: '${settings.SMTP_DOMAIN}'
       SMTP_OPEN_TIMEOUT: '${settings.SMTP_OPEN_TIMEOUT}'
       SMTP_READ_TIMEOUT: '${settings.SMTP_READ_TIMEOUT}'
-      SMTP_SSL: "disabled"
+      SMTP_SSL: "enabled"
       SMTP_TLS: "disabled"
     links:
       - sqldb:psql
@@ -195,7 +195,7 @@ actions:
       - crontab /usr/local/share/crontab.template
       - cd $ROOT
       - bundle
-      - bundle binstubs gruf --force
+      - gem install grpc --platform ruby -- --with-cflags=-D__va_copy=va_copy
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - npm ci
