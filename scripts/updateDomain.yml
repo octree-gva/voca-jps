@@ -2,6 +2,7 @@ type: update
 name: Update Decidim Domain name
 baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
+skipNodeEmails: true
 
 settings:
   fields:
