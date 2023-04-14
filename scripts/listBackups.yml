@@ -1,0 +1,54 @@
+jpsType: update
+jpsVersion: '1.7.4'
+
+name: Backup/List
+id: list-backup
+description:
+  short: List available backups in JSON
+categories:
+  - apps/platforms
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+logo: assets/decidim_logo.png
+ssl: true
+ha: false
+skipNodeEmails: true
+
+settings:
+  fields:
+    - name: RESTIC_REPOSITORY
+      type: string
+      caption: Host+bucket+region for the S3
+    - name: AWS_ACCESS_KEY_ID
+      type: string
+      caption: Key ID for S3
+    - name: AWS_SECRET_ACCESS_KEY
+      type: string
+      caption: Secret for S3
+    - name: RESTIC_PASSWORD
+      type: string
+      caption: Key used for restic encryption
+    - name: AWS_DEFAULT_REGION
+      type: string
+      caption: Default Region
+      default: "ch-dk-2"
+onInstall:
+  - cmd[storage]:
+    - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
+    - yum install -y jq restic
+    - export RESTIC_REPOSITORY="s3:${settings.RESTIC_REPOSITORY}/${env.name}"
+    - export AWS_ACCESS_KEY_ID="${settings.AWS_ACCESS_KEY_ID}"
+    - export AWS_SECRET_ACCESS_KEY="${settings.AWS_SECRET_ACCESS_KEY}"
+    - export RESTIC_PASSWORD="${settings.RESTIC_PASSWORD}"
+    - export AWS_DEFAULT_REGION="${settings.AWS_DEFAULT_REGION}"
+    - if ! restic snapshots >/dev/null 2>&1; then restic init; fi
+    - restic snapshots --json > /tmp/restic.json
+  - script: |
+      var result = jelastic.environment.file.read("${env.name}", session, "/tmp/restic.json", "docker", "storage");
+      return { "result": 0, "message": result.body };
+  - setGlobals:
+      JSON_BODY: ${response.message}
+  - cmd[storage]:
+    - rm -f /tmp/restic.json
+  - return:
+      type: success
+      message: ${globals.JSON_BODY}

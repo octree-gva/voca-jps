@@ -1,10 +1,10 @@
 jpsType: update
 jpsVersion: '1.7.4'
 
-name: Template/Create
-id: create-voca-template
+name: Backup/Make
+id: backup-instance
 description:
-  short: Create a voca template
+  short: Backup a voca instance
 categories:
   - apps/platforms
 baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
@@ -31,7 +31,7 @@ settings:
       type: string
       caption: Default Region
       default: "ch-dk-2"
-    - name: TEMPLATE_NAME
+    - name: TAG
       type: string
       caption: Name of the new template
 onInstall:
@@ -74,6 +74,7 @@ actions:
         return { "result": 0 };
   backup:
     - cmd[storage]:
+      - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
       - yum install -y jq restic
       - export RESTIC_REPOSITORY="s3:${settings.RESTIC_REPOSITORY}/${env.name}"
       - export AWS_ACCESS_KEY_ID="${settings.AWS_ACCESS_KEY_ID}"
@@ -81,10 +82,10 @@ actions:
       - export RESTIC_PASSWORD="${settings.RESTIC_PASSWORD}"
       - export AWS_DEFAULT_REGION="${settings.AWS_DEFAULT_REGION}"
       - if ! restic snapshots >/dev/null 2>&1; then restic init; fi
-      - restic backup --tag "${settings.TEMPLATE_NAME}" /data 
+      - restic backup --tag "${settings.TAG}" /data 
   cleanup:
     - cmd[storage]:
       - rm -f /data/.env-cp.bak /data/*.sql
 
 success: |
-  The new template "${settings.TEMPLATE_NAME}" has been created.
+  A new backup tagged "${settings.TAG}" has been created for s3:${settings.RESTIC_REPOSITORY}/${env.name}
