@@ -99,7 +99,6 @@ actions:
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - bundle exec rails db:migrate
       - npm install
-      - rm -rf public/decidim-packs
       - bundle exec rails assets:precompile
     - forEach(nodes.cp):
         - restartContainer[${@i.id}]
