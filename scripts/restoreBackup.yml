@@ -89,6 +89,9 @@ actions:
       - tar cfz /tmp/pg_dump-$(date +%Y-%m-%d-%H%M%S).tar.gz -C /data ./*.sql
       - rm -f /data/*.sql
   install:
+    - forEach(nodes.cp):
+        - restartContainer[${@i.id}]
+        - sleep: 5000
     - cmd[cp]:
       - cd $ROOT
       - bundle install
@@ -98,7 +101,5 @@ actions:
       - npm install
       - rm -rf public/decidim-packs
       - bundle exec rails assets:precompile
-    - forEach(nodes.cp):
-        - restartContainer[${@i.id}]
 success: |
   Latest backup restored from ${settings.SOURCE_ENV_NAME}
