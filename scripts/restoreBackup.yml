@@ -15,9 +15,12 @@ skipNodeEmails: true
 
 settings:
   fields:
-    - name: ENV_NAME
+    - name: SOURCE_ENV_NAME
       type: string
       caption: Env name of the source backup
+    - name: SOURCE_PASSWORD
+      type: string
+      caption: Password for the source backup
     - name: RESTIC_REPOSITORY
       type: string
       caption: Host+bucket+region for the S3
@@ -52,14 +55,22 @@ actions:
     - cmd[storage]:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
       - yum install -y jq restic
-      - export RESTIC_REPOSITORY="s3:${settings.RESTIC_REPOSITORY}/${settings.ENV_NAME}"
+      - export OWN_REPOSITORY="s3:${settings.RESTIC_REPOSITORY}/${env.name}"
+      - export OWN_PASSWORD="${settings.RESTIC_PASSWORD}"
+      - export RESTIC_REPOSITORY="$OWN_REPOSITORY"
+      - export RESTIC_PASSWORD="$OWN_PASSWORD"
       - export AWS_ACCESS_KEY_ID="${settings.AWS_ACCESS_KEY_ID}"
       - export AWS_SECRET_ACCESS_KEY="${settings.AWS_SECRET_ACCESS_KEY}"
-      - export RESTIC_PASSWORD="${settings.RESTIC_PASSWORD}"
       - export AWS_DEFAULT_REGION="${settings.AWS_DEFAULT_REGION}"
       - if ! restic snapshots >/dev/null 2>&1; then restic init; fi
+      - export RESTIC_REPOSITORY="s3:${settings.RESTIC_REPOSITORY}/${settings.SOURCE_ENV_NAME}"
+      - export RESTIC_PASSWORD="${settings.SOURCE_PASSWORD}"
       - export SNAPSHOT_ID=$(restic snapshots --latest ${settings.HEAD_INDEX} --json | jq -r '.[0].id') 
       - restic restore $SNAPSHOT_ID --target /
+      - export RESTIC_REPOSITORY="$OWN_REPOSITORY"
+      - export RESTIC_PASSWORD="$OWN_PASSWORD"
+      - restic backup --tag "afterRestore" /data 
+
   restoreDb:
     - script: |
         var result = jelastic.environment.file.read("${env.name}", session, "/data/decidim.sql", "docker", "storage");
@@ -83,4 +94,4 @@ actions:
     - forEach(nodes.cp):
         - restartContainer[${@i.id}]
 success: |
-  Latest backup restored from ${settings.ENV_NAME}
+  Latest backup restored from ${settings.SOURCE_ENV_NAME}
