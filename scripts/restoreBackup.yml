@@ -44,6 +44,7 @@ settings:
 onInstall:
   - restoreFiles
   - restoreDb
+  - install
 actions:
   restoreFiles:
     - cmd[storage]:
@@ -87,5 +88,15 @@ actions:
       - cd /data
       - tar cfz /tmp/pg_dump-$(date +%Y-%m-%d-%H%M%S).tar.gz -C /data ./*.sql
       - rm -f /data/*.sql
+  install:
+    - cmd[cp]:
+      - bundle install
+      - bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
+      - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
+      - npm install
+      - rm -rf public/decidim-packs
+      - bundle exec rails assets:precompile
+    - forEach(nodes.cp):
+        - restartContainer[${@i.id}]
 success: |
   Latest backup restored from ${settings.SOURCE_ENV_NAME}
