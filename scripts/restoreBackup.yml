@@ -44,7 +44,6 @@ settings:
 onInstall:
   - restoreFiles
   - restoreDb
-  - restart
 actions:
   restoreFiles:
     - cmd[storage]:
@@ -88,8 +87,5 @@ actions:
       - cd /data
       - tar cfz /tmp/pg_dump-$(date +%Y-%m-%d-%H%M%S).tar.gz -C /data ./*.sql
       - rm -f /data/*.sql
-  restart:
-    - forEach(nodes.cp):
-        - restartContainer[${@i.id}]
 success: |
   Latest backup restored from ${settings.SOURCE_ENV_NAME}
