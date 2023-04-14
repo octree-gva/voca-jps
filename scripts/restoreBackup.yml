@@ -89,8 +89,6 @@ actions:
       - tar cfz /tmp/pg_dump-$(date +%Y-%m-%d-%H%M%S).tar.gz -C /data ./*.sql
       - rm -f /data/*.sql
   restart:
-    - forEach(nodes.sqldb):
-        - restartContainer[${@i.id}]
     - forEach(nodes.cp):
         - restartContainer[${@i.id}]
 success: |

@@ -33,7 +33,8 @@ settings:
       default: "ch-dk-2"
     - name: TAG
       type: string
-      caption: Name of the new template
+      caption: Tag the backup
+      default: "daily"
 onInstall:
   - backupDb
   - copyEnvs
