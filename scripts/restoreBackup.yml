@@ -101,5 +101,9 @@ actions:
       - npm install
       - rm -rf public/decidim-packs
       - bundle exec rails assets:precompile
+    - forEach(nodes.cp):
+        - restartContainer[${@i.id}]
+        - sleep: 5000
+
 success: |
   Latest backup restored from ${settings.SOURCE_ENV_NAME}
