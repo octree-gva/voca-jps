@@ -35,7 +35,7 @@ nodes:
       DATABASE_URL: postgres://${globals.DB_USER}:${globals.DB_PASSWORD}@psql:5432/decidim
       SECRET_KEY_BASE: '${globals.SECRET_KEY_BASE}'
       MASTER_KEY: '${globals.MASTER_KEY}'
-      MEMCACHED_SERVERS: "memcached:11211"
+      MEMCACHE_SERVERS: "memcached:11211"
       RAILS_FORCE_SSL: 'disabled'
       RAILS_CACHE_MODE: 'memcached'
       RAILS_JOB_MODE: 'sidekiq'
