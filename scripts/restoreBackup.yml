@@ -89,20 +89,21 @@ actions:
       - tar cfz /tmp/pg_dump-$(date +%Y-%m-%d-%H%M%S).tar.gz -C /data ./*.sql
       - rm -f /data/*.sql
   install:
+    # Restart to apply change in volumes
     - forEach(nodes.cp):
         - restartContainer[${@i.id}]
-        - sleep: 5000
+        - sleep: 1000
+    # Install changes
     - cmd[cp]:
       - cd $ROOT
       - bundle install
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - bundle exec rails db:migrate
-      - npm install
+      - npm ci
       - bundle exec rails assets:precompile
-    - forEach(nodes.cp):
-        - restartContainer[${@i.id}]
-        - sleep: 5000
-
+    # Restart server normally
+    - cmd[cp]:
+      - bundle exec rails restart
 success: |
   Latest backup restored from ${settings.SOURCE_ENV_NAME}
