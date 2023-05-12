@@ -195,7 +195,6 @@ actions:
       - crontab /usr/local/share/crontab.template
       - cd $ROOT
       - bundle
-      - gem install grpc --platform ruby -- --with-cflags=-D__va_copy=va_copy
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
       - npm ci
@@ -206,8 +205,6 @@ actions:
       - mkdir -p /home/decidim/app/log
       - ln -s /home/decidim/app/log /var/log/decidim
       - chown decidim:decidim /home/decidim/app/log
-    - forEach(nodes.cp):
-        - restartContainer[${@i.id}]
-
+      - bundle exec rails restart
 success: |
   Voca parked a decidim
