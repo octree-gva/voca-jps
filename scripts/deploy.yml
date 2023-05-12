@@ -205,6 +205,7 @@ actions:
       - mkdir -p /home/decidim/app/log
       - ln -s /home/decidim/app/log /var/log/decidim
       - chown decidim:decidim /home/decidim/app/log
+      - cd $ROOT
       - bundle exec rails restart
 success: |
   Voca parked a decidim
