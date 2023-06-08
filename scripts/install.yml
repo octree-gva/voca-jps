@@ -43,10 +43,10 @@ actions:
       - npm install
 
   prepare:
-    - cmd[cp]: |
-        cd $ROOT;
-        bundle exec rails db:migrate;
-        bundle exec rails assets:precompile;
+    - cmd[cp]:
+      - cd $ROOT;
+      - bundle exec rails db:migrate;
+      - bundle exec rails assets:precompile;
 
 success: |
   The instance ${settings.PUBLIC_URL} is ready to be bound to ${env.envName}
