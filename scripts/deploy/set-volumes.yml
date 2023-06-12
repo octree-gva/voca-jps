@@ -1,0 +1,20 @@
+jpsType: update
+jpsVersion: '1.7.4'
+
+name: Scripts/Deploy/SetVolumes
+id: Set Volumes
+description:
+  short: Decidim Saas
+categories:
+  - apps/platforms
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+logo: assets/decidim_logo.png
+skipNodeEmails: true
+
+
+onInstall:
+  - cmd[cp]:
+      - cd /
+      - tar xvfz $ROOT/tmp/volumes.tar.gz
+      - cd $ROOT
+      - chown -R decidim:decidim public db/migrate storage config

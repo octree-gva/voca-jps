@@ -186,11 +186,10 @@ actions:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
       - yum install -y restic jq
   volumes:
-    - cmd[cp]:
-      - cd /
-      - tar xvfz $ROOT/tmp/volumes.tar.gz
-      - cd $ROOT
-      - chown -R decidim:decidim public db/migrate storage config
+    - install:
+      jps: scripts/deploy/set-volumes.yml?_r=${fn.random}
+      envName: ${env.envName}
+      loggerName: 'VOLUMES'
   installation:
     - cmd[cp]: 
       - crontab /usr/local/share/crontab.template
