@@ -1,7 +1,7 @@
 jpsType: install
 jpsVersion: '1.7.4'
 
-name: Voca/Autopoiesis/System
+name: Scripts/Deploy/Autopoiesis
 id: voca-autopoiesis-system
 description:
   short: Your saas for civic techs

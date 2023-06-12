@@ -1,5 +1,5 @@
 type: update
-name: Changing routing for a decidim instance
+name: Scripts/Routing
 baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 skipNodeEmails: true

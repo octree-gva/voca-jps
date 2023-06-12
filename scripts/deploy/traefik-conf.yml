@@ -1,7 +1,7 @@
 jpsType: update
 jpsVersion: '1.7.4'
 
-name: Traefik.conf/Decidim
+name: Scripts/Deploy/TraefikConf
 id: decidim-vanilla-traefik
 description:
   short: Decidim Saas

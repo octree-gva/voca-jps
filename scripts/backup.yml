@@ -1,7 +1,7 @@
 jpsType: update
 jpsVersion: '1.7.4'
 
-name: Backup/Make
+name: Scripts/Backup
 id: backup-instance
 description:
   short: Backup a voca instance

@@ -1,7 +1,7 @@
 jpsType: install
 jpsVersion: '1.7.4'
 
-name: Infra/DecidimEnv
+name: Scripts/Deploy
 id: decidim-vanilla-infra-environment
 description:
   short: Create a dummy Decidim environment
@@ -187,8 +187,9 @@ actions:
       - yum install -y restic jq
   volumes:
     - cmd[cp]:
+      - cd /
+      - tar xvfz $ROOT/tmp/volumes.tar.gz
       - cd $ROOT
-      - tar xvfz tmp/volumes.tar.gz -C /
       - chown -R decidim:decidim public db/migrate storage config
   installation:
     - cmd[cp]: 

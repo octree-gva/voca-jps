@@ -1,5 +1,5 @@
 type: update
-name: Restart decidim instances
+name: Scripts/Restart
 baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
 logo: assets/decidim_logo.png
 
