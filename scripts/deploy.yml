@@ -170,7 +170,6 @@ nodes:
 
 onInstall:
   - dependancies
-  - volumes
   - installation
   - finalize
 
@@ -185,27 +184,15 @@ actions:
     - cmd[storage]:
       - yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
       - yum install -y restic jq
-  volumes:
-    - install:
-      jps: scripts/deploy/set-volumes.yml?_r=${fn.random}
-      envName: ${env.envName}
-      loggerName: 'VOLUMES'
+
   installation:
     - cmd[cp]: 
       - crontab /usr/local/share/crontab.template
-      - cd $ROOT
-      - bundle
-      - bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
-      - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
-      - npm ci
-      - bundle exec rails db:migrate
-      - bundle exec rails assets:precompile
   finalize:
     - cmd[cp]: 
       - mkdir -p /home/decidim/app/log
       - ln -s /home/decidim/app/log /var/log/decidim
       - chown decidim:decidim /home/decidim/app/log
-      - cd $ROOT
-      - bundle exec rails restart
+
 success: |
   Voca parked a decidim

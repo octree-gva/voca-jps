@@ -18,3 +18,12 @@ onInstall:
       - tar xvfz $ROOT/tmp/volumes.tar.gz
       - cd $ROOT
       - chown -R decidim:decidim public db/migrate storage config
+      - bundle
+      - bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
+      - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
+      - npm ci
+      - bundle exec rails db:migrate
+      - bundle exec rails assets:precompile
+
+  - forEach(nodes.cp):
+      - restartContainer[${@i.id}]
