@@ -3,7 +3,7 @@ jpsVersion: '1.7.4'
 
 name: Voca/Autopoiesis
 id: voca-autopoiesis
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6
 logo: assets/decidim_logo.png
 ssl: true
 ha: false
@@ -47,7 +47,7 @@ actions:
       - mkdir -p /config/hosts && touch /config/traefik.yml
       - export SERVICE_HOST_NAME="${settings.SERVICE_HOST_NAME}" SYSADMIN_EMAIL="${settings.SYSADMIN_EMAIL}"
       - curl -s
-        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik.yml"
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6/templates/traefik.yml"
         > /tmp/traefik.yml
       - cd /config
       - (envsubst \$SERVICE_HOST_NAME,\$SYSADMIN_EMAIL < /tmp/traefik.yml) >
