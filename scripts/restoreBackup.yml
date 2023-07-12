@@ -93,18 +93,5 @@ actions:
     - forEach(nodes.cp):
         - restartContainer[${@i.id}]
         - sleep: 1000
-    # Install changes
-    - cmd[cp]:
-      - cd $ROOT
-      - bundle install
-      - bundle exec rails --tasks | grep -E 'rails [^ ]*:install:migrations' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
-      - bundle exec rails --tasks | grep -E 'rails [^ ]*:webpacker:install' | awk -F ' ' '{ print "bundle exec rails " $2 ";" }' | bash
-      - bundle exec rails db:migrate
-      - npm ci
-      - bundle exec rails assets:precompile
-    # Restart server normally
-    - cmd[cp]:
-      - cd $ROOT
-      - bundle exec rails restart
 success: |
   Latest backup restored from ${settings.SOURCE_ENV_NAME}
