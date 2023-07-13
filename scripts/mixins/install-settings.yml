@@ -11,12 +11,6 @@ fields:
   - name: PUBLIC_DOMAIN
     type: string
     caption: PUBLIC_DOMAIN
-  - name: DECIDIM_CURRENCY_UNIT
-    caption: DECIDIM_CURRENCY_UNIT
-    type: string
-  - type: string
-    name: TIMEZONE
-    caption: TIMEZONE
   - type: string
     name: SERVICE_NAME
     caption: Used for traefik name
