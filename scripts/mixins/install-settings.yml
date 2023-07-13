@@ -4,15 +4,9 @@ fields:
   - name: PUBLIC_URL
     type: string
     caption: PUBLIC_URL
-  - name: TRAEFIK_ENVNAME
+  - name: TIMEZONE
     type: string
-    caption: TRAEFIK_ENVNAME
-    default: vocacity-traefik
+    caption: TIMEZONE
   - name: PUBLIC_DOMAIN
     type: string
     caption: PUBLIC_DOMAIN
-  - type: string
-    name: SERVICE_NAME
-    caption: Used for traefik name
-    name: SERVICE_HOST_NAME
-    caption: Used for traefik directory
