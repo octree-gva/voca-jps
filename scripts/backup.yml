@@ -7,7 +7,7 @@ description:
   short: Backup a voca instance
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6
 logo: assets/decidim_logo.png
 ssl: true
 ha: false

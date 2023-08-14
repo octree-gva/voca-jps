@@ -1,13 +1,13 @@
 jpsType: install
 jpsVersion: '1.7.4'
 
-name: Scripts/Deploy
+name: scripts/park
 id: decidim-vanilla-infra-environment
 description:
   short: Create a dummy Decidim environment
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6
 logo: assets/decidim_logo.png
 ssl: true
 ha: false
@@ -16,7 +16,7 @@ skipNodeEmails: true
 mixins:
   - /scripts/mixins/globals.yml?_r=${fn.random}
 # Set environments values
-onBeforeInit: /scripts/deploy/deploy-settings.js?_r=${fn.random}
+onBeforeInit: /scripts/park/park-settings.js?_r=${fn.random}
 
 nodes:
   # Decidim application

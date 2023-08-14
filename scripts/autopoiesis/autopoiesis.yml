@@ -1,14 +1,14 @@
 jpsType: install
 jpsVersion: '1.7.4'
 
-name: Scripts/Deploy/Autopoiesis
-id: voca-autopoiesis-system
+name: Scripts/Autopoiesis/autopoiesis
+id: autopoiesis
 description:
   short: Your saas for civic techs
 categories:
   - apps/platforms
 
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6
 logo: assets/decidim_logo.png
 skipNodeEmails: true
 
@@ -115,13 +115,12 @@ nodes:
 onInstall:
   - redisSetPassword
   - callbackAutopoiesis
-
 actions:
   redisSetPassword:
     - cmd[nosqldb]: jem passwd set -p ${globals.REDIS_PASSWORD}
   callbackAutopoiesis:
     - install:
-      jps: scripts/deploy/autopoiesis-callback.yml?_r=${fn.random}
+      jps: scripts/autopoiesis/autopoiesis-callback.yml?_r=${fn.random}
       envName: ${settings.TRAEFIK_ENVNAME}
       loggerName: 'TRAEFFIK_CALLBACK'
       settings:

@@ -7,20 +7,19 @@ description:
   short: Install Decidim on a dummy environment
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6
 logo: assets/decidim_logo.png
 ssl: true
 ha: false
 skipNodeEmails: true
 
-onBeforeInit: /scripts/deploy/install-settings.js?_r=${fn.random}
+onBeforeInit: /scripts/install/install-settings.js?_r=${fn.random}
 
 onInstall:
   # Update the display name from parked to the display name
   - setDisplayName
   # Update the environment vars
   - addEnvVars
-  - prepare
 
 actions:
   setDisplayName:
@@ -32,11 +31,6 @@ actions:
     - env.control.AddContainerEnvVars[cp]:
       vars: {"PUBLIC_URL":"${settings.PUBLIC_URL}"}
     - env.control.RestartNodes[cp]
-  prepare:
-    - cmd[cp]:
-      - cd $ROOT;
-      - bundle exec rails db:migrate;
-      - bundle exec rails assets:precompile;
 
 success: |
   The instance ${settings.PUBLIC_URL} is ready to be bound to ${env.envName}

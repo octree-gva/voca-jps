@@ -1,7 +1,7 @@
 actions:
   traefikReady:
     - install:
-      jps: scripts/deploy/traefik-conf.yml?_r=${fn.random}
+      jps: scripts/routing/traefik-conf.yml?_r=${fn.random}
       envName: ${settings.TRAEFIK_ENVNAME}
       loggerName: 'TRAEFIK_READY'
       settings:

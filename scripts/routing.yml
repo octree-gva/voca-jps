@@ -1,6 +1,6 @@
 type: update
 name: Scripts/Routing
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6
 logo: assets/decidim_logo.png
 skipNodeEmails: true
 
@@ -44,7 +44,7 @@ onInstall:
 actions:
   ok_routing:
     - install:
-      jps: scripts/deploy/traefik-conf.yml?_r=${fn.random}
+      jps: scripts/routing/traefik-conf.yml?_r=${fn.random}
       envName: ${settings.TRAEFIK_ENVNAME}
       loggerName: 'TRAEFIK_UPDATE'
       settings:

@@ -1,13 +1,13 @@
 jpsType: update
 jpsVersion: '1.7.4'
 
-name: Scripts/Deploy/TraefikError
-id: decidim-vanilla-traefik
+name: Scripts/Routing/TraefikError
+id: routing-error
 description:
   short: Decidim Saas
 categories:
   - apps/platforms
-baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/main
+baseUrl: https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6
 logo: assets/decidim_logo.png
 skipNodeEmails: true
 
@@ -38,7 +38,7 @@ onInstall:
       - echo "time=\"$(date +%FT%TZ)\" level=info msg=\"decidim $URL is in
         maintenance\"" >> /var/log/run.log
       - curl -s
-        "https://raw.githubusercontent.com/octree-gva/voca-jps/main/templates/traefik-placeholder.yml"
+        "https://raw.githubusercontent.com/octree-gva/voca-jps/v0.0.6/templates/traefik-placeholder.yml"
         > /tmp/$SERVICE_NAME.yml
       - cd /config/hosts && mkdir -p $SERVICE_HOST_NAME
       - (envsubst \$URL,\$SERVICE_NAME,\$ERROR_URL,\$ERROR_CODE <
