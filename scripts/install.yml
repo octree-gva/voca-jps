@@ -13,7 +13,16 @@ ssl: true
 ha: false
 skipNodeEmails: true
 
-onBeforeInit: /scripts/install/install-settings.js?_r=${fn.random}
+fields:
+  - name: PUBLIC_URL
+    type: string
+    caption: PUBLIC_URL
+  - name: TIMEZONE
+    type: string
+    caption: TIMEZONE
+  - name: PUBLIC_DOMAIN
+    type: string
+    caption: PUBLIC_DOMAIN
 
 onInstall:
   # Update the display name from parked to the display name

@@ -1,8 +1,8 @@
 jpsType: update
 jpsVersion: '1.7.4'
 
-name: Scripts/Park/SetVolumes
-id: park_set_volumes
+name: Scripts/PostPark
+id: post_park_actions
 description:
   short: Decidim Saas
 categories:
