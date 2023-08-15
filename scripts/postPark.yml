@@ -26,3 +26,6 @@ onInstall:
 
   - forEach(nodes.cp):
       - restartContainer[${@i.id}]
+
+success: |
+  Decidim infrastructure parked 

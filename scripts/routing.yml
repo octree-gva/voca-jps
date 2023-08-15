@@ -44,7 +44,7 @@ onInstall:
 actions:
   ok_routing:
     - install:
-      jps: scripts/routing/traefik-conf.yml?_r=${fn.random}
+      jps: scripts/routing/traefik-ok.yml?_r=${fn.random}
       envName: ${settings.TRAEFIK_ENVNAME}
       loggerName: 'TRAEFIK_UPDATE'
       settings:
@@ -54,7 +54,7 @@ actions:
         LAN_IP: ${nodes.cp.master.intIP}
   not_ok_routing:
     - install:
-      jps: scripts/deploy/traefik-error.yml?_r=${fn.random}
+      jps: scripts/routing/traefik-error.yml?_r=${fn.random}
       envName: ${settings.TRAEFIK_ENVNAME}
       loggerName: 'TRAEFIK_UPDATE'
       settings:
